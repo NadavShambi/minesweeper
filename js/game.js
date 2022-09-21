@@ -1,24 +1,35 @@
 'use strict'
 
+//check win >flags
+//display win/lose msg
+//fix time 4 digits
+//cleanup
+//do bonuses
+
+
+
 const MINE = '💣'
 const EMPTY = '&nbsp;'
 const FLAG = '🚩'
+const HEART = '❤'
 
 
 var gBoard
 var gTimerInterval
-var gNegs = []
+
+
+const gLevel = {
+    SIZE: 12,
+    MINES: 32,
+
+}
 
 const gGame = {
     isOn: false,
     shownCount: 0,
-    markedCount: 0,
-    secsPassed: 0
-}
-
-const gLevel = {
-    SIZE: 12,
-    MINES: 2
+    markedCount: gLevel.MINES,
+    secsPassed: 0,
+    hearts:3
 }
 
 
@@ -26,11 +37,8 @@ function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
     placeMines(gBoard, gLevel.MINES)
     setMinesNegsCount()
-
     renderBoard(gBoard)
-    console.log(gBoard);
 }
-
 
 function buildBoard(rows, cols = rows) {
     const board = []
@@ -48,7 +56,6 @@ function buildBoard(rows, cols = rows) {
     return board
 }
 
-
 function renderBoard(board, selector = '.board') {
 
     var strHTML = '<tbody>'
@@ -58,12 +65,9 @@ function renderBoard(board, selector = '.board') {
         for (var j = 0; j < board[0].length; j++) {
             const cell = board[i][j]
 
-
-
             const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : cell.minesAroundCount
-            ///// change to empty
-
-
+            
+            ///// change last isMine to empty
             const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
 
             const flipped = cell.isShown ? 'flipped' : ''
@@ -77,6 +81,8 @@ function renderBoard(board, selector = '.board') {
 
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML
+    var flag = document.querySelector('.flags span')
+    flag.innerText = gGame.markedCount
 }
 
 function placeMines(board, num) {
@@ -103,14 +109,12 @@ function setMinesNegsCount() {
 }
 
 function cellClicked(cell) {
-    console.log('left')
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
-    console.log('curCell = ', curCell)
     startTimer()
     if (!curCell.minesAroundCount) {
-
         expandShown(gBoard, +cell.dataset.i, +cell.dataset.j)
-
+    } else if(curCell.isMine){
+        checkGameOver()
     }
 
     cell.classList.add('flipped')
@@ -119,18 +123,31 @@ function cellClicked(cell) {
 }
 
 function cellRightClicked(cell) {
-    console.log('right');
+    //// FLAGS
+    startTimer()
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
-    curCell.isMarked = curCell.isMarked ? false : true
+
+    if (curCell.isMarked) {
+        curCell.isMarked = false
+        gGame.markedCount += 1
+
+    } else {
+        if(!gGame.markedCount)return
+        curCell.isMarked = true
+        gGame.markedCount -= 1
+    }
+
     renderBoard(gBoard)
 }
 
 
 function onMode(mode) {
-    console.log(mode);
+    var flag = document.querySelector('.flags span')
+    flag.innerText = mode.dataset.m
     gLevel.SIZE = mode.dataset.r
     gLevel.MINES = mode.dataset.m
-    initGame()
+    gGame.markedCount = mode.dataset.m
+    restart()
 }
 
 
@@ -145,32 +162,84 @@ function startTimer() {
 }
 
 
-
-
-
-
-
-function expandShown(board, i, j) {
-    const marksPos = [
-        { i: i - 1, j: j - 1 },
-        { i: i - 1, j: j },
-        { i: i - 1, j: j + 1 },
-        { i: i, j: j - 1 },
-        { i: i, j: j + 1 },
-        { i: i + 1, j: j - 1 },
-        { i: i + 1, j: j },
-        { i: i + 1, j: j + 1 },
-    ]
-    for(var k = 0 ; k < marksPos.length; k++){
-        if (i < 0 || i >= board.length) continue
-        if (j < 0 || j >= board[0].length) continue
-        var curCell = marksPos[k]
-        gBoard[curCell.i][curCell.j].isShown = true
-        console.log(curCell);
-    }
-    
+function restart(){
+    const endScreen = document.querySelector('.end-screen')
+    const hearts = document.querySelector('.life')
+    const timer = document.querySelector('.game-info h3')
+    clearInterval(gTimerInterval)
+    timer.innerText = 0
+    gGame.hearts = 3
+    gGame.secsPassed = 0
+    gTimerInterval = null
+    endScreen.style.display = 'none' 
+    hearts.innerText = HEART.repeat(gGame.hearts)
+    initGame()
 }
 
-// function checkGameOver(){
 
-// }
+
+function expandShown(board, rowIdx, colIdx) {
+    // var negs = getNegs(gBoard,rowIdx,colIdx)
+    // for (var i = 0; i < negs.length; i++) {
+    //     if (i < 0 || i >= board.length) continue
+    //     for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+    //         if(gBoard[negs[i].i][negs[i].j].isShown) gGame.markedCount++
+    //         if(!gBoard[negs[i].i][negs[i].j].isMine){
+    //             gBoard[negs[i].i][negs[i].j].isShown = true
+    //             if(!gBoard[negs[i].i][negs[i].j].minesAroundCount){
+    //                 expandShown(gBoard,[negs[i].i],[negs[i].j])
+    //             }
+    //         }
+    //     }
+    // }
+
+
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= board.length) continue
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+            if (j < 0 || j >= board[0].length) continue
+            if (!board[i][j].isMine) board[i][j].isShown = true
+            // if(!board[i][j].minesAroundCount)expandShown(gBoard,i,j)
+        }
+    }
+
+
+}
+
+function checkGameOver(){
+const hearts = document.querySelector('.life')
+gGame.hearts--
+hearts.innerText = HEART.repeat(gGame.hearts)
+if(!gGame.hearts){
+    clearInterval(gTimerInterval)
+    console.log('gameOver')
+    const endScreen = document.querySelector('.end-screen')
+    endScreen.style.display = 'flex' 
+    revealBoard(gBoard)
+
+}
+renderBoard(gBoard)
+}
+
+function revealBoard(board){
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board[0].length; j++) {
+            gBoard[i][j].isShown = true
+        }
+    }
+}
+
+function getNegs(board, rowIdx, colIdx){
+    var negs = []
+    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+        if (i < 0 || i >= board.length) continue
+        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+            if (j < 0 || j >= board[0].length) continue
+            if (gBoard[i][j].isShown) continue
+            if (gBoard[i][j].isMarked) continue
+            negs.push({i,j})
+                
+        }
+    }
+    return negs
+}

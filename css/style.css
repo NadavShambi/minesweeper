@@ -174,6 +174,37 @@ label{
     cursor: default;
 }
 
+.end-screen{
+    position: absolute;
+    height: 300px;
+    width: 450px;
+    background: linear-gradient(45deg,
+    #808000e6,#b2b1b1e6);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.greet{
+    font-size: 64px;
+    color: var(--pr-dark-cr);
+    text-shadow: 5px 5px var(--pr-light-cr),
+    10px 10px var(--pr-dark-cr);
+}
+
+.end-screen button{
+    font-size: 34px;
+    margin-top: 30px;
+    padding: 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 1em;
+    background: var(--pr-light-cr);
+    color: var(--pr-dark-cr);
+    box-shadow: 5px 5px 15px var(--pr-dark-cr);
+}
+
 
 @media screen and (max-height: 1500px) {
     .cell{

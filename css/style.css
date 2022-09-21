@@ -129,7 +129,7 @@ header h1 {
 }
 
 .flipped {
-    background: linear-gradient(olive,pink);
+    background: linear-gradient(235deg,olive 5%,#518c6eb1 60%);
 }
 
 @media screen and (max-height: 1500px) {

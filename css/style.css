@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Orbitron:wght@500&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Fredoka One', cursive;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    height: 150px;
+    width: 50%;
+    border: 5px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    justify-content: end;
+}
+
+header h1 {
+    position: absolute;
+    top: -10%;
+    font-size: 64px;
+}
+
+header .choose-level form {
+    background: red;
+    width: 100%;    
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.game-conainer{
+    min-height: 50vh ;
+    width: 50%;
+    border: 5px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.game-info{
+    min-height: 10vh;
+    width: 100%;
+    border: 5px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.board{
+    /* min-height: 40vh;
+    width: 100%; */
+    text-align: center;
+    border-radius: 3px;
+}
+
+.cell{
+    height: 60px;
+    width: 60px;
+    box-shadow: 0 0 0 3px #000;
+}

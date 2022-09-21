@@ -17,7 +17,7 @@ const gGame = {
 
 const gLevel = {
     SIZE: 12,
-    MINES: 32
+    MINES: 2
 }
 
 
@@ -64,7 +64,7 @@ function renderBoard(board, selector = '.board') {
             ///// change to empty
 
 
-            const content = cell.isShown ? isMine : isMine
+            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG:EMPTY
 
             const flipped = cell.isShown ? 'flipped' : ''
 
@@ -107,13 +107,8 @@ function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     console.log('curCell = ', curCell)
     if (curCell.minesAroundCount === 0) {
-
-        console.log(countNeg(gBoard, cell.dataset.i, cell.dataset.j));
-        BlowZeros(gBoard, cell.dataset.i, cell.dataset.j)
+        
     }
-
-
-
 
     cell.classList.add('flipped')
     curCell.isShown = true
@@ -122,18 +117,15 @@ function cellClicked(cell) {
 
 function cellRightClicked(cell) {
     console.log('right');
+    const curCell = gBoard[cell.dataset.i][cell.dataset.j]
+    curCell.isMarked = curCell.isMarked ?  false : true
+    renderBoard(gBoard)
 }
 
-function BlowZeros(board, rowIdx, colIdx) {
-    var x = 0
-    console.log(rowIdx);
-    console.log(colIdx);
-    for (var i = rowIdx - 1; i < rowIdx + 1; i++) {
-        if (i < 0 || i >= board.length) continue
-        for (var j = colIdx - 1; j < colIdx + 1; j++) {
-            if (j < 0 || j >= board[0].length) continue
-            debugger
-            console.log(x++);
-        }
-    }
+
+function onMode(mode){
+    console.log(mode);
+    gLevel.SIZE = mode.dataset.r
+    gLevel.MINES = mode.dataset.m
+    initGame()
 }

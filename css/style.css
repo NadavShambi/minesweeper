@@ -47,7 +47,7 @@ header h1 {
     font-size: 64px;
     letter-spacing: 0.1em;
     font-family: 'Fredoka One', cursive;
-    padding: 35px;
+    padding: 35px 50px;
     border-radius: 10% 50%;
     box-shadow:
         inset 0 0 0 3px #eee,
@@ -63,6 +63,7 @@ header h1 {
 
 .choose-level h2 {
     font-size: 40px;
+    padding-bottom: 15px;
 }
 
 .choose-level form {
@@ -71,16 +72,21 @@ header h1 {
     align-items: center;
     justify-content: space-evenly;
     font-size: 45px;
+    overflow: hidden;
+}
+
+label{
+    cursor: pointer;
 }
 
 .choose-level label input {
     position: relative;
-    left: 50px;
+    left: 70px;
     -webkit-appearance: none;
 }
 
 .choose-level label input:checked {
-    box-shadow: 0 0 55px 30px var(--pr-light-cr);
+    box-shadow: 0 0 80px 50px olive;
 }
 
 
@@ -92,6 +98,9 @@ header h1 {
     flex-direction: column;
     align-items: center;
     background: var(--glass);
+    padding-bottom: 40px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 
 .game-info {
@@ -99,10 +108,42 @@ header h1 {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
     background: var(--glass);
     box-shadow: inset 0 0 13px var(--pr-dark-cr) ,
     inset 0 0 200px olive;
+    position: relative;
+}
+
+.life{
+    font-size: 50px;
+    color: red;
+    letter-spacing: 0.5em;
+    background: var(--glass);
+    text-align: center;
+    padding-left: 20px;
+    border-radius: 14px;
+    box-shadow: inset 0 0 0 2px var(--pr-dark-cr);
+    position: absolute;
+    left: 7%;
+}
+
+.timer{
+    font-family: 'Orbitron', sans-serif;
+    font-size: 50px;
+    position: absolute;
+    right: 7%;
+    color: limegreen;
+    background: #222;
+    width: 240px;
+    text-align: center;
+    padding: 8px;
+    border-radius: 25%;
+    box-shadow: 0 0 0 6px var(--pr-light-cr);
+    letter-spacing: 0.1em;
+}
+.flags{
+    font-size: 45px;
 }
 
 .board {
@@ -122,7 +163,7 @@ header h1 {
     inset 2px 2px 0 2px #9995,
     inset -2.5px -2.5px 3px #000;
     background: var(--glass);
-    
+    cursor: pointer;
     font-size: 2em;
     user-select: none;
     border-radius: 7px;
@@ -130,7 +171,9 @@ header h1 {
 
 .flipped {
     background: linear-gradient(235deg,olive 5%,#518c6eb1 60%);
+    cursor: default;
 }
+
 
 @media screen and (max-height: 1500px) {
     .cell{

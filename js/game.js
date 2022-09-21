@@ -6,13 +6,14 @@ const FLAG = '🚩'
 
 
 var gBoard
-
+var gTimerInterval
 var gNegs = []
 
 const gGame = {
     isOn: false,
     shownCount: 0,
-    markedCount: 0
+    markedCount: 0,
+    secsPassed: 0
 }
 
 const gLevel = {
@@ -38,7 +39,6 @@ function buildBoard(rows, cols = rows) {
         for (var j = 0; j < cols; j++) {
             board[i][j] = {
                 minesAroundCount: 0,
-                location: { i, j },
                 isShown: false,
                 isMine: false,
                 isMarked: false,
@@ -64,7 +64,7 @@ function renderBoard(board, selector = '.board') {
             ///// change to empty
 
 
-            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG:EMPTY
+            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
 
             const flipped = cell.isShown ? 'flipped' : ''
 
@@ -106,8 +106,11 @@ function cellClicked(cell) {
     console.log('left')
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     console.log('curCell = ', curCell)
-    if (curCell.minesAroundCount === 0) {
-        
+    startTimer()
+    if (!curCell.minesAroundCount) {
+
+        expandShown(gBoard, +cell.dataset.i, +cell.dataset.j)
+
     }
 
     cell.classList.add('flipped')
@@ -118,14 +121,56 @@ function cellClicked(cell) {
 function cellRightClicked(cell) {
     console.log('right');
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
-    curCell.isMarked = curCell.isMarked ?  false : true
+    curCell.isMarked = curCell.isMarked ? false : true
     renderBoard(gBoard)
 }
 
 
-function onMode(mode){
+function onMode(mode) {
     console.log(mode);
     gLevel.SIZE = mode.dataset.r
     gLevel.MINES = mode.dataset.m
     initGame()
 }
+
+
+
+function startTimer() {
+    const timer = document.querySelector('.game-info h3')
+    if (gTimerInterval) return
+    gTimerInterval = setInterval(function () {
+        timer.innerText = ++gGame.secsPassed
+
+    }, 1000)
+}
+
+
+
+
+
+
+
+function expandShown(board, i, j) {
+    const marksPos = [
+        { i: i - 1, j: j - 1 },
+        { i: i - 1, j: j },
+        { i: i - 1, j: j + 1 },
+        { i: i, j: j - 1 },
+        { i: i, j: j + 1 },
+        { i: i + 1, j: j - 1 },
+        { i: i + 1, j: j },
+        { i: i + 1, j: j + 1 },
+    ]
+    for(var k = 0 ; k < marksPos.length; k++){
+        if (i < 0 || i >= board.length) continue
+        if (j < 0 || j >= board[0].length) continue
+        var curCell = marksPos[k]
+        gBoard[curCell.i][curCell.j].isShown = true
+        console.log(curCell);
+    }
+    
+}
+
+// function checkGameOver(){
+
+// }

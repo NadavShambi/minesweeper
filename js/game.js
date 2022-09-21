@@ -7,6 +7,8 @@ const FLAG = '🚩'
 
 var gBoard
 
+var gNegs = []
+
 const gGame = {
     isOn: false,
     shownCount: 0,
@@ -14,14 +16,14 @@ const gGame = {
 }
 
 const gLevel = {
-    SIZE: 10,
-    MINES: 2
+    SIZE: 12,
+    MINES: 32
 }
 
 
 function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
-    placeMines(gBoard, 2)
+    placeMines(gBoard, gLevel.MINES)
     setMinesNegsCount()
 
     renderBoard(gBoard)
@@ -37,7 +39,7 @@ function buildBoard(rows, cols = rows) {
             board[i][j] = {
                 minesAroundCount: 0,
                 location: { i, j },
-                isShown: true,
+                isShown: false,
                 isMine: false,
                 isMarked: false,
             }
@@ -55,10 +57,19 @@ function renderBoard(board, selector = '.board') {
         strHTML += '<tr>'
         for (var j = 0; j < board[0].length; j++) {
             const cell = board[i][j]
-            const content = (cell.isMine) ? MINE : cell.minesAroundCount 
-            const className = `cell cell-${i}-${j}`
 
-            strHTML += `<td class="${className}" onclick="cellClicked(this)" data-i=${i} data-j=${j}> ${content} </td>`
+
+
+            const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : cell.minesAroundCount
+            ///// change to empty
+
+
+            const content = cell.isShown ? isMine : isMine
+
+            const flipped = cell.isShown ? 'flipped' : ''
+
+            const className = `cell ${flipped}`
+            strHTML += `<td class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}> ${content} </td>`
         }
         strHTML += '</tr>'
     }
@@ -82,11 +93,47 @@ function placeMines(board, num) {
     }
 }
 
-function setMinesNegsCount(){
-    for(var i = 0; i < gBoard.length; i++){
+function setMinesNegsCount() {
+    for (var i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
             var negsCount = countNeg(gBoard, i, j)
             gBoard[i][j].minesAroundCount = negsCount
+        }
+    }
+}
+
+function cellClicked(cell) {
+    console.log('left')
+    const curCell = gBoard[cell.dataset.i][cell.dataset.j]
+    console.log('curCell = ', curCell)
+    if (curCell.minesAroundCount === 0) {
+
+        console.log(countNeg(gBoard, cell.dataset.i, cell.dataset.j));
+        BlowZeros(gBoard, cell.dataset.i, cell.dataset.j)
+    }
+
+
+
+
+    cell.classList.add('flipped')
+    curCell.isShown = true
+    renderBoard(gBoard)
+}
+
+function cellRightClicked(cell) {
+    console.log('right');
+}
+
+function BlowZeros(board, rowIdx, colIdx) {
+    var x = 0
+    console.log(rowIdx);
+    console.log(colIdx);
+    for (var i = rowIdx - 1; i < rowIdx + 1; i++) {
+        if (i < 0 || i >= board.length) continue
+        for (var j = colIdx - 1; j < colIdx + 1; j++) {
+            if (j < 0 || j >= board[0].length) continue
+            debugger
+            console.log(x++);
         }
     }
 }

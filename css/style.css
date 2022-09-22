@@ -117,7 +117,7 @@ label {
 }
 
 .game-info {
-    height: 10vh;
+    height: 150px;
     width: var(--container-width);
     display: flex;
     align-items: center;
@@ -164,7 +164,7 @@ label {
 }
 
 .game-conainer {
-    min-height: 55vh;
+    min-height: 650px;
     width: var(--container-width);
     display: flex;
     flex-direction: column;
@@ -274,9 +274,8 @@ label {
 
 @media screen and (max-height: 1500px) {
 
-
     .hint {
-        transform: scale(0.5);
+        transform: scale(0.7);
     }
 
     .cell {

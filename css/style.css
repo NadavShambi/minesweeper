@@ -12,7 +12,7 @@
     --pr-light-cr: #eee;
     --pr-dark-cr: #252525;
     --glass: linear-gradient(45deg, #eee5, #eee);
-    --container-width: 950px;
+    --container-width: 600px;
 }
 
 body {
@@ -42,9 +42,8 @@ header {
 
 .hint {
     position: absolute;
-    height: 100px;
-    width: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
     left: 5%;
     bottom: 30px;
     border-radius: 50%;
@@ -54,8 +53,8 @@ header {
 }
 
 .hint img {
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
 }
 
 
@@ -68,7 +67,7 @@ header {
 
 header h1 {
     position: absolute;
-    top: -50%;
+    top: -80px;
     background: #eee;
     font-size: 64px;
     letter-spacing: 0.1em;
@@ -97,7 +96,7 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    font-size: 45px;
+    font-size: 35px;
     overflow: hidden;
 }
 
@@ -117,7 +116,7 @@ label {
 }
 
 .game-info {
-    height: 150px;
+    height: 100px;
     width: var(--container-width);
     display: flex;
     align-items: center;
@@ -129,7 +128,7 @@ label {
 }
 
 .life {
-    font-size: 50px;
+    font-size: 30px;
     color: red;
     letter-spacing: 0.5em;
     background: var(--glass);
@@ -141,11 +140,11 @@ label {
 
 .timer {
     font-family: 'Orbitron', sans-serif;
-    font-size: 50px;
+    font-size: 30px;
     color: rgb(42, 97, 42);
     background: var(--glass);
-    width: 240px;
-    height: 70px;
+    width: 150px;
+    height: 50px;
     text-align: center;
     font-weight: 600;
     padding: 5px;
@@ -155,7 +154,7 @@ label {
 }
 
 .flags {
-    font-size: 45px;
+    font-size: 30px;
     background: var(--glass);
     padding: 8px;
     border-radius: 8px;
@@ -164,7 +163,7 @@ label {
 }
 
 .game-conainer {
-    min-height: 650px;
+    min-height: 350px;
     width: var(--container-width);
     display: flex;
     flex-direction: column;
@@ -177,8 +176,8 @@ label {
 }
 
 .board {
-    height: 50vh;
     width: var(--container-width);
+    height: 500px;
     border-radius: 3px;
     display: flex;
     justify-content: center;
@@ -190,16 +189,16 @@ label {
 }
 
 .cell {
-    height: 70px;
+    height: 40px;
     text-align: center;
-    width: 70px;
+    width: 40px;
     box-shadow: 0 0 0 3px #000,
         inset -5px -5px 0 3px #9995,
         inset 2px 2px 0 2px #9995,
         inset -2.5px -2.5px 3px #000;
     background: linear-gradient(235deg, olive 5%, #518c6eb1 60%);
     cursor: pointer;
-    font-size: 2em;
+    font-size: 1em;
     user-select: none;
     border-radius: 7px;
     display: grid;
@@ -272,15 +271,15 @@ label {
     }
 }
 
-@media screen and (max-height: 1500px) {
+@media screen and (max-height: 1000px) {
 
     .hint {
         transform: scale(0.7);
     }
 
     .cell {
-        height: 50px;
-        width: 50px;
+        height: 20px;
+        width: 20px;
     }
 
     .life,

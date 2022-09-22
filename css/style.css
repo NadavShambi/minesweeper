@@ -169,7 +169,7 @@ label {
 }
 
 .game-conainer {
-    min-height: 50vh;
+    min-height: var(--container-width);
     width: var(--container-width);
     display: flex;
     flex-direction: column;

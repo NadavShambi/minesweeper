@@ -10,10 +10,9 @@
 :root {
     --pr-light-cr: #eee;
     --pr-dark-cr: #252525;
-    --glass: linear-gradient(45deg, #eee5, #eee)
+    --glass: linear-gradient(45deg, #eee5, #eee);
+    --container-width:55vh;
 }
-
-
 
 body {
     min-height: 100vh;
@@ -27,7 +26,7 @@ body {
 
 header {
     height: 200px;
-    width: 55vh;
+    width: var(--container-width);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -89,23 +88,9 @@ label{
     box-shadow: 0 0 80px 50px olive;
 }
 
-
-.game-conainer {
-    min-height: 55vh;
-    width: 55vh;
-    /* border: 5px solid black; */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--glass);
-    padding-bottom: 40px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
-}
-
 .game-info {
     min-height: 10vh;
-    width: 100%;
+    width: var(--container-width);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,12 +117,13 @@ label{
     font-family: 'Orbitron', sans-serif;
     font-size: 50px;
     position: absolute;
-    right: 7%;
+    right: 5%;
     color: rgb(42, 97, 42);
     background: var(--glass);
-    width: 200px;
-    text-align: center;
-    padding: 8px;
+    width: 240px;
+    text-align: start;
+    padding: 10px;
+    padding-left: 22px;
     border-radius: 16px;
     box-shadow: 0 0 0 4px var(--pr-dark-cr);
     letter-spacing: 0.1em;
@@ -145,7 +131,18 @@ label{
 .flags{
     font-size: 45px;
 }
-
+.game-conainer {
+    min-height: var(--container-width);
+    width: var(--container-width);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background: var(--glass);
+    padding: 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
 .board {
     height: 100%;
     width: 100%;
@@ -205,7 +202,6 @@ label{
     box-shadow: 5px 5px 15px var(--pr-dark-cr);
 }
 
-
 @media screen and (max-height: 1500px) {
     
     .cell{
@@ -217,5 +213,4 @@ label{
     .timer{
         font-size: 40px;
     }
-
   }

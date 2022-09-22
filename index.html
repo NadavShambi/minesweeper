@@ -8,69 +8,72 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body onload="initGame()">
-    <header>
-      <div class="hint" onclick="hint()" title="Don't waste it too early.">
-      <img src="imgs/bulb.png" alt="light-bulb"></div>
-      <h1>Minesweeper</h1>
-      <div class="choose-level">
-        <h2>Choose Your Level:</h2>
-        <form action="get">
-          <label>
-            <input
-              type="radio"
-              name="mode"
-              onclick="onMode(this)"
-              data-r="4"
-              data-m="2"
-              data-h="1"
-
-            />
-            Easy
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="mode"
-              onclick="onMode(this)"
-              data-r="8"
-              data-m="14"
-              data-h="2"
-
-            />
-            Hard
-          </label>
-          <label>
-            <input
-              checked
-              type="radio"
-              name="mode"
-              onclick="onMode(this)"
-              data-r="12"
-              data-m="32"
-              data-h="3"
-            />
-            Expert
-          </label>
-        </form>
+    <div class="game">
+      <header>
+        <div class="hint" onclick="hint()" title="Don't waste it too early.">
+          <img src="imgs/bulb.png" alt="light-bulb" />
+        </div>
+        <h1>Minesweeper</h1>
+        <div class="choose-level">
+          <h2>Choose Your Level:</h2>
+          <form action="get">
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                onclick="onMode(this)"
+                data-r="4"
+                data-m="2"
+                data-h="1"
+              />
+              Easy
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="mode"
+                onclick="onMode(this)"
+                data-r="8"
+                data-m="14"
+                data-h="2"
+              />
+              Hard
+            </label>
+            <label>
+              <input
+                checked
+                type="radio"
+                name="mode"
+                onclick="onMode(this)"
+                data-r="12"
+                data-m="32"
+                data-h="3"
+              />
+              Expert
+            </label>
+          </form>
+        </div>
+      </header>
+      <div class="game-info">
+        <h2 class="life" title="Use them wisely.">❤❤❤</h2>
+        <h2
+          class="flags"
+          title="Mark the loctions of possible mines with Right-Click."
+        >
+          🚩:<span>X</span>
+        </h2>
+        <h3 class="timer">00:00</h3>
       </div>
-    </header>
-    <div class="game-info">
-      <h2 class="life" title="Use them wisely.">❤❤❤</h2>
-      <h2 class="flags" title="Mark the loctions of possible mines with Right-Click.">🚩:<span>X</span></h2>
-      <h3 class="timer">00:00</h3>
-    </div>
-    <div class="game-conainer">
-      <table class="board">
-        <table>
-          
+      <div class="game-conainer">
+        <table class="board">
+          <table></table>
         </table>
-      </table>
+      </div>
+      <div class="end-screen">
+        <h2 class="greet">Solid effort</h2>
+        <button onclick="restart()">Play Again!</button>
+      </div>
     </div>
-    <div class="end-screen">
-      <h2 class="greet">Solid effort</h2>
-      <button onclick="restart()">Play Again!</button>
-    </div>
-
     <script src="js/utils.js"></script>
     <script src="js/game.js"></script>
   </body>

@@ -175,16 +175,20 @@ label {
 }
 
 .board {
-    height: 100%;
-    width: 100%;
-    text-align: center;
+    height: 50vh;
+    width: var(--container-width);
     border-radius: 3px;
+    display: flex;
+    justify-content: center;
+}
+.board table{
+    table-layout: fixed;
     display: grid;
-    place-content: center;
 }
 
 .cell {
     height: 70px;
+    text-align: center;
     width: 70px;
     box-shadow: 0 0 0 3px #000,
         inset -5px -5px 0 3px #9995,
@@ -195,6 +199,8 @@ label {
     font-size: 2em;
     user-select: none;
     border-radius: 7px;
+    display: grid;
+    place-items: center;
 }
 
 .flipped {
@@ -278,4 +284,8 @@ label {
     .timer{
         font: 45px;
     }
+}
+@media screen and (max-height: 1250px) {
+
+    
 }

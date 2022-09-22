@@ -49,7 +49,7 @@ function buildBoard(rows, cols = rows) {
 
 function renderBoard(board, selector = '.board') {
 
-    var strHTML = '<tbody>'
+    var strHTML = '<table><tbody>'
     for (var i = 0; i < board.length; i++) {
 
         strHTML += '<tr>'
@@ -66,12 +66,12 @@ function renderBoard(board, selector = '.board') {
             const color = returnColor(cell.minesAroundCount)
 
 
-            strHTML += `<td class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}
-            style="color:${color} ;">${content} </td>`
+            strHTML += `<td><div class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}
+            style="color:${color} ;">${content} </div></td>`
         }
         strHTML += '</tr>'
     }
-    strHTML += '</tbody>'
+    strHTML += '</tbody></table>'
 
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML

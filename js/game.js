@@ -306,7 +306,7 @@ function returnColor(num) {
 
 function hint() {
     const hint = document.querySelector('.hint')
-    if (!gGame.hint) return
+    if (!gGame.hint || !gGame.isOn) return
     hint.style.animation = 'bulb 1s linear forwards'
     gGame.hint--
     const safeCells = []

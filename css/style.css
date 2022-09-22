@@ -3,7 +3,7 @@
 * {
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     font-family: 'Fredoka One', cursive;
     user-select: none;
 }
@@ -12,7 +12,7 @@
     --pr-light-cr: #eee;
     --pr-dark-cr: #252525;
     --glass: linear-gradient(45deg, #eee5, #eee);
-    --container-width: 600px;
+    --container-width: 645px;
 }
 
 body {
@@ -23,27 +23,28 @@ body {
     align-items: center;
     background: linear-gradient(315deg, #234, #3459);
     background-color: olive;
+    background-repeat: no-repeat;
 }
 
-header {
-    height: 200px;
+.title {
+    height: 90px;
+    background: #3e8c3e;
     width: var(--container-width);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    justify-content: end;
-    position: relative;
-    border-top-left-radius: 20% 40%;
-    border-top-right-radius: 20% 40%;
-    background: var(--glass);
-
+    text-align: center;
+    font-size: 34px;
+    color: var(--pr-dark-cr);
+    text-shadow:
+        5px 5px var(--pr-light-cr),
+        10px 10px var(--pr-dark-cr);
+    border-top-left-radius: 25% 50%;
+    border-top-right-radius: 25% 50%;
+    box-shadow: -10px -10px 50px var(--pr-light-cr);
 }
 
 .hint {
     position: absolute;
-    height: 80px;
-    width: 80px;
+    height: 50px;
+    width: 50px;
     left: 5%;
     bottom: 30px;
     border-radius: 50%;
@@ -53,8 +54,8 @@ header {
 }
 
 .hint img {
-    height: 80px;
-    width: 80px;
+    height: 50px;
+    width: 50px;
 }
 
 
@@ -65,25 +66,15 @@ header {
     }
 }
 
-header h1 {
-    position: absolute;
-    top: -80px;
-    background: #eee;
-    font-size: 64px;
-    letter-spacing: 0.1em;
-    font-family: 'Fredoka One', cursive;
-    padding: 35px 50px;
-    border-radius: 10% 50%;
-    box-shadow:
-        inset 0 0 0 3px #eee,
-        inset 0 0 0 5px #333,
-        0 0 0 6px #999,
-        10px 10px 50px #222;
-    color: olivedrab;
-}
-
 .choose-level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+    background: var(--glass);
+    width: var(--container-width);
+    position: relative;
+    overflow: hidden;
 }
 
 .choose-level h2 {
@@ -106,7 +97,7 @@ label {
 
 .choose-level label input {
     position: relative;
-    left: 70px;
+    left: 50px;
     -webkit-appearance: none;
     width: 0;
 }
@@ -160,11 +151,12 @@ label {
     border-radius: 8px;
     float: left;
     box-shadow: 0 0 0 2px var(--pr-dark-cr);
+    letter-spacing: 0.2em;
 }
 
 .game-conainer {
-    min-height: 350px;
-    width: var(--container-width);
+    width: 600px;
+    height: 530px;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -176,8 +168,6 @@ label {
 }
 
 .board {
-    width: var(--container-width);
-    height: 500px;
     border-radius: 3px;
     display: flex;
     justify-content: center;
@@ -273,22 +263,51 @@ label {
 
 @media screen and (max-height: 1000px) {
 
+    .title{
+        width: 445px;
+    }
+    .choose-level {
+        width: 445px;
+    }
+
+    .game-info {
+        width: 445px;
+    }
+
+    .game-conainer {
+        width: 400px;
+        height: 380px;
+    }
+
+    .title {
+        font-size: 20px;
+        height: 60px;
+    }
+
+    .choose-level {
+        height: 80px;
+    }
+
+    .choose-level h2 {
+        font-size: 27px;
+    }
+
     .hint {
         transform: scale(0.7);
     }
 
     .cell {
-        height: 20px;
-        width: 20px;
+        height: 30px;
+        width: 30px;
     }
 
     .life,
-    .flags {
-        font-size: 40px;
+    .timer {
+        font-size: 30px;
+        height: 40px;
     }
 
-    .timer {
-        font: 45px;
+    .flags {
+        font-size: 20px;
     }
 }
-

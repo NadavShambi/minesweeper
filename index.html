@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body onload="initGame()">
-
-    <header>
-      <div class="hint" onclick="hint()" title="Don't waste it too early.">
-      <img src="imgs/bulb.png" alt="light-bulb"></div>
-      <h1>Minesweeper</h1>
+      <div class="title"><h1>Minesweeper</h1></div>
+      
       <div class="choose-level">
-        <h2>Choose Your Level:</h2>
-        <form action="get">
+
+        <div class="hint" onclick="hint()" title="Don't waste it too early.">
+      <img src="imgs/bulb.png" alt="light-bulb"></div>
+      <h2 class="lev">Choose Your Level:</h2>
+      <form action="get">
           <label>
             <input
               type="radio"
@@ -54,7 +54,6 @@
           </label>
         </form>
       </div>
-    </header>
     <div class="game-info">
       <h2 class="life" title="Use them wisely.">❤❤❤</h2>
       <h2 class="flags" title="Mark the loctions of possible mines with Right-Click.">🚩:<span>X</span></h2>

@@ -61,7 +61,7 @@ function renderBoard(board, selector = '.board') {
             ///// change last isMine to empty
             const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
             const flipped = cell.isShown ? 'flipped' : ''
-            const isLost = gGame.isLost ? 'lose' : ''
+            const isLost = gGame.isLost&&cell.isMine ? 'lose':''
             const className = `cell cell-${i}-${j} ${flipped} ${isLost}`
             const color = returnColor(cell.minesAroundCount)
 
@@ -193,6 +193,7 @@ function restart() {
     gGame.secsPassed = 0
     gGame.shownCount = 0
     gGame.hint = 1
+    gGame.isLost = false
     gGame.markedCount = gLevel.MINES
     gTimerInterval = null
     endScreen.style.display = 'none'
@@ -241,6 +242,7 @@ function checkGameOver() {
         revealBoard(gBoard)
         hearts.innerText = BROKEN_HEART
         gGame.isOn = false
+        gGame.isLost = true
 
     }
     renderBoard(gBoard)
@@ -262,11 +264,7 @@ function checkVictory() {
 function revealBoard(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
-            if (gBoard[i][j].isMine) {
-                gBoard[i][j].isShown = true
-                gBoard[i][j].isLost = true
-
-            }
+            if (gBoard[i][j].isMine) gBoard[i][j].isShown = true
         }
     }
 }

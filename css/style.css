@@ -12,7 +12,7 @@
     --pr-light-cr: #eee;
     --pr-dark-cr: #252525;
     --glass: linear-gradient(45deg, #eee5, #eee);
-    --container-width: 55vh;
+    --container-width: 950px;
 }
 
 body {
@@ -52,7 +52,8 @@ header {
     display: grid;
     place-items: center;
 }
-.hint img{
+
+.hint img {
     height: 100px;
     width: 100px;
 }
@@ -60,7 +61,7 @@ header {
 
 @keyframes bulb {
     100% {
-        background: radial-gradient(#c6c624,transparent,transparent);
+        background: radial-gradient(#c6c624, transparent, transparent);
         cursor: not-allowed;
     }
 }
@@ -108,6 +109,7 @@ label {
     position: relative;
     left: 70px;
     -webkit-appearance: none;
+    width: 0;
 }
 
 .choose-level label input:checked {
@@ -115,7 +117,7 @@ label {
 }
 
 .game-info {
-    height: 10vh;
+    height: 150px;
     width: var(--container-width);
     display: flex;
     align-items: center;
@@ -162,7 +164,7 @@ label {
 }
 
 .game-conainer {
-    min-height: 55vh;
+    min-height: 650px;
     width: var(--container-width);
     display: flex;
     flex-direction: column;
@@ -175,13 +177,14 @@ label {
 }
 
 .board {
-    height: 50vh;
+    height: 950px;
     width: var(--container-width);
     border-radius: 3px;
     display: flex;
     justify-content: center;
 }
-.board table{
+
+.board table {
     table-layout: fixed;
     display: grid;
 }
@@ -219,9 +222,9 @@ label {
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 0 5px #222,
-   inset 5px 5px 15px #eee,
-   inset -5px -5px 10px #222,
-   10px 10px 15px #222 ;
+        inset 5px 5px 15px #eee,
+        inset -5px -5px 10px #222,
+        10px 10px 15px #222;
     border-radius: 16px;
 
 }
@@ -249,10 +252,9 @@ label {
     animation: safe 1s linear infinite;
 }
 
-.lose{
+.lose {
     background-color: #c01313;
 }
-
 
 @keyframes safe {
 
@@ -269,19 +271,3 @@ label {
     }
 }
 
-@media screen and (max-height: 1500px) {
-
-    .cell {
-        height: 50px;
-        width: 50px;
-    }
-
-    .life,
-    .flags
-     {
-        font-size: 40px;
-    }
-    .timer{
-        font: 45px;
-    }
-}

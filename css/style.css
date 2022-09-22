@@ -45,7 +45,6 @@ header {
     content: '\'';
     height: 100px;
     width: 100px;
-    background: none;
     background-image: url(/imgs/bulb.png);
     background-size: cover;
     background-repeat: no-repeat;

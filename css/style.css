@@ -5,13 +5,14 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Fredoka One', cursive;
+    user-select: none;
 }
 
 :root {
     --pr-light-cr: #eee;
     --pr-dark-cr: #252525;
     --glass: linear-gradient(45deg, #eee5, #eee);
-    --container-width:55vh;
+    --container-width: 55vh;
 }
 
 body {
@@ -33,10 +34,43 @@ header {
     position: relative;
     justify-content: end;
     position: relative;
-    border-top-left-radius: 20% 40% ;
+    border-top-left-radius: 20% 40%;
     border-top-right-radius: 20% 40%;
     background: var(--glass);
 
+}
+
+.hint {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background: radial-gradient();
+    left: 5%;
+    bottom: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    animation: none;
+    animation-play-state: paused;
+    
+}
+
+.hint::before {
+    content: '';
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    background-image: url(/imgs/bulb.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+@keyframes bulb {
+    100% {
+        background: radial-gradient(#adc229, transparent, transparent);
+        cursor: not-allowed;
+
+    }
 }
 
 header h1 {
@@ -74,7 +108,7 @@ header h1 {
     overflow: hidden;
 }
 
-label{
+label {
     cursor: pointer;
 }
 
@@ -89,18 +123,18 @@ label{
 }
 
 .game-info {
-    min-height: 10vh;
+    height: 10vh;
     width: var(--container-width);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     background: var(--glass);
-    box-shadow: inset 0 0 13px var(--pr-dark-cr) ,
-    inset 0 0 200px olive;
+    box-shadow: inset 0 0 13px var(--pr-dark-cr),
+        inset 0 0 200px olive;
     position: relative;
 }
 
-.life{
+.life {
     font-size: 50px;
     color: red;
     letter-spacing: 0.5em;
@@ -109,28 +143,31 @@ label{
     padding-left: 20px;
     border-radius: 14px;
     box-shadow: inset 0 0 0 2px var(--pr-dark-cr);
-    position: absolute;
-    left: 7%;
 }
 
-.timer{
+.timer {
     font-family: 'Orbitron', sans-serif;
     font-size: 50px;
-    position: absolute;
-    right: 5%;
     color: rgb(42, 97, 42);
     background: var(--glass);
     width: 240px;
-    text-align: start;
-    padding: 10px;
-    padding-left: 22px;
+    height: 70px;
+    text-align: center;
+    padding: 5px;
     border-radius: 16px;
-    box-shadow: 0 0 0 4px var(--pr-dark-cr);
+    box-shadow: 0 0 0 2px var(--pr-dark-cr);
     letter-spacing: 0.1em;
 }
-.flags{
+
+.flags {
     font-size: 45px;
+    background: var(--glass);
+    padding: 8px;
+    border-radius: 8px;
+    float: left;
+    box-shadow: 0 0 0 2px var(--pr-dark-cr);
 }
+
 .game-conainer {
     min-height: var(--container-width);
     width: var(--container-width);
@@ -143,6 +180,7 @@ label{
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
+
 .board {
     height: 100%;
     width: 100%;
@@ -156,10 +194,10 @@ label{
     height: 70px;
     width: 70px;
     box-shadow: 0 0 0 3px #000,
-    inset -5px -5px 0 3px #9995,
-    inset 2px 2px 0 2px #9995,
-    inset -2.5px -2.5px 3px #000;
-    background: linear-gradient(235deg,olive 5%,#518c6eb1 60%);
+        inset -5px -5px 0 3px #9995,
+        inset 2px 2px 0 2px #9995,
+        inset -2.5px -2.5px 3px #000;
+    background: linear-gradient(235deg, olive 5%, #518c6eb1 60%);
     cursor: pointer;
     font-size: 2em;
     user-select: none;
@@ -171,26 +209,26 @@ label{
     cursor: default;
 }
 
-.end-screen{
+.end-screen {
     position: absolute;
     height: 300px;
     width: 450px;
     background: linear-gradient(45deg,
-    #808000e6,#b2b1b1e6);
+            #808000e6, #b2b1b1e6);
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.greet{
+.greet {
     font-size: 64px;
     color: var(--pr-dark-cr);
     text-shadow: 5px 5px var(--pr-light-cr),
-    10px 10px var(--pr-dark-cr);
+        10px 10px var(--pr-dark-cr);
 }
 
-.end-screen button{
+.end-screen button {
     font-size: 34px;
     margin-top: 30px;
     padding: 12px;
@@ -202,15 +240,35 @@ label{
     box-shadow: 5px 5px 15px var(--pr-dark-cr);
 }
 
+.safe {
+    animation: safe 1s linear infinite;
+}
+
+@keyframes safe {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 3px #000,
+            inset -5px -5px 0 3px #9995,
+            inset 2px 2px 0 2px #9995,
+            inset -2.5px -2.5px 3px #000;
+    }
+
+    50% {
+        box-shadow: inset 0 0 0 3px #adc229;
+    }
+}
+
 @media screen and (max-height: 1500px) {
-    
-    .cell{
+
+    .cell {
         height: 50px;
         width: 50px;
     }
+
     .life,
     .flags,
-    .timer{
+    .timer {
         font-size: 40px;
     }
-  }
+}

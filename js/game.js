@@ -25,7 +25,8 @@ const gGame = {
     shownCount: 0,
     markedCount: gLevel.MINES,
     secsPassed: 0,
-    lives: gLevel.hearts
+    lives: gLevel.hearts,
+    hint: 1
 }
 
 
@@ -66,7 +67,7 @@ function renderBoard(board, selector = '.board') {
             ///// change last isMine to empty
             const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
             const flipped = cell.isShown ? 'flipped' : ''
-            const className = `cell ${flipped}`
+            const className = `cell cell-${i}-${j} ${flipped}`
             const color = returnColor(cell.minesAroundCount)
 
 
@@ -168,9 +169,9 @@ function startTimer() {
         ++gGame.secsPassed
         var displayMins = Math.floor(gGame.secsPassed / 60)
         var displaySecs = gGame.secsPassed % 60
-        
+
         if (displaySecs < 10) {
-            displaySecs = '0' + gGame.secsPassed
+            displaySecs = '0' + displaySecs
         }
         if (displayMins < 10) {
             displayMins = '0' + displayMins
@@ -186,11 +187,15 @@ function restart() {
     const endScreen = document.querySelector('.end-screen')
     const hearts = document.querySelector('.life')
     const timer = document.querySelector('.game-info h3')
+    const hint = document.querySelector('.hint')
+    hint.style.animation = 'none'
+
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
     gGame.lives = gLevel.hearts
     gGame.secsPassed = 0
     gGame.shownCount = 0
+    gGame.hint = 1
     gGame.markedCount = gLevel.MINES
     gTimerInterval = null
     endScreen.style.display = 'none'
@@ -289,4 +294,22 @@ function returnColor(num) {
         default:
             return ''
     }
+}
+
+function hint() {
+    const hint = document.querySelector('.hint')
+    if (!gGame.hint) return
+    hint.style.animation = 'bulb 1s linear forwards'
+    gGame.hint--
+    const safeCells = []
+    for (var i = 0; i < gBoard.length; i++) {
+        for (let j = 0; j < gBoard.length; j++) {
+            if (!gBoard[i][j].minesAroundCount) safeCells.push({ i, j })
+        }
+    }
+    var drawn = drawRandom(safeCells)
+    console.log(drawn);
+    var selector = `.cell-${drawn.value[0].i}-${drawn.value[0].j}`
+    const cell = document.querySelector(selector)
+    cell.classList.add('safe')
 }

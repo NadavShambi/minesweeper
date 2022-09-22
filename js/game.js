@@ -8,6 +8,7 @@ const MINE = '💣'
 const EMPTY = '&nbsp;'
 const FLAG = '🚩'
 const HEART = '❤'
+const BROKEN_HEART = '💔'
 
 
 var gBoard
@@ -21,7 +22,7 @@ const gLevel = {
 }
 
 const gGame = {
-    isOn: false,
+    isOn: true,
     shownCount: 0,
     markedCount: gLevel.MINES,
     secsPassed: 0,
@@ -110,6 +111,7 @@ function setMinesNegsCount() {
 
 function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
+    if(!gGame.isOn)return
     startTimer()
     if (curCell.isShown || curCell.isMarked) return
 
@@ -129,7 +131,9 @@ function cellClicked(cell) {
 
 function cellRightClicked(cell) {
     //// FLAGS
+    if(!gGame.isOn)return
     startTimer()
+
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     if (curCell.isShown) return
 
@@ -192,6 +196,7 @@ function restart() {
 
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
+    gGame.isOn = true
     gGame.lives = gLevel.hearts
     gGame.secsPassed = 0
     gGame.shownCount = 0
@@ -244,6 +249,8 @@ function checkGameOver() {
         greet.innerText = 'Solid effort'
         endScreen.style.display = 'flex'
         revealBoard(gBoard)
+        hearts.innerText = BROKEN_HEART
+        gGame.isOn = false
 
     }
     renderBoard(gBoard)
@@ -278,7 +285,7 @@ function revealBoard(board) {
 function returnColor(num) {
     switch (num) {
         case 1:
-            return '#467917'
+            return 'steelblue'
         case 2:
             return '#339720'
         case 3:
@@ -304,7 +311,7 @@ function hint() {
     const safeCells = []
     for (var i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard.length; j++) {
-            if (!gBoard[i][j].minesAroundCount) safeCells.push({ i, j })
+            if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) safeCells.push({ i, j })
         }
     }
     var drawn = drawRandom(safeCells)

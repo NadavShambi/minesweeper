@@ -169,14 +169,14 @@ label {
 }
 
 .game-conainer {
-    min-height: var(--container-width);
+    min-height: 50vh;
     width: var(--container-width);
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
     background: var(--glass);
-    padding: 20px;
+    padding-top: 40px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }

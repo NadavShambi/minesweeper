@@ -9,7 +9,7 @@
   </head>
   <body onload="initGame()">
     <header>
-      <div class="hint" onclick="hint()" title="you can get only 1 hint"></div>
+      <div class="hint" onclick="hint()" title="Don't waste it too early."></div>
       <h1>Minesweeper</h1>
       <div class="choose-level">
         <h2>Choose Your Level:</h2>
@@ -54,8 +54,8 @@
       </div>
     </header>
     <div class="game-info">
-      <h2 class="life">❤❤❤</h2>
-      <h2 class="flags">🚩:<span>X</span></h2>
+      <h2 class="life" title="Use them wisely.">❤❤❤</h2>
+      <h2 class="flags" title="Mark the loctions of possible mines with Right-Click.">🚩:<span>X</span></h2>
       <h3 class="timer">00:00</h3>
     </div>
     <div class="game-conainer">
@@ -63,7 +63,7 @@
     </div>
     <div class="end-screen">
       <h2 class="greet">Solid effort</h2>
-      <button onclick="restart()">Try Again!</button>
+      <button onclick="restart()">Play Again!</button>
     </div>
 
     <script src="js/utils.js"></script>

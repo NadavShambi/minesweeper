@@ -111,7 +111,9 @@ function setMinesNegsCount() {
 
 function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
-    if(!gGame.isOn)return
+    
+    if(!gGame.isOn){}
+    gGame.isOn = true
     startTimer()
 
     if (curCell.isShown || curCell.isMarked) return
@@ -197,7 +199,7 @@ function restart() {
 
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
-    gGame.isOn = true
+    // gGame.isOn = true
     gGame.lives = gLevel.hearts
     gGame.secsPassed = 0
     gGame.shownCount = 0
@@ -321,3 +323,4 @@ function hint() {
     const cell = document.querySelector(selector)
     cell.classList.add('safe')
 }
+

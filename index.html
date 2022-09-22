@@ -13,13 +13,15 @@
       <div class="choose-level">
         <h2>Choose Your Level:</h2>
         <form action="get">
-          <label>
+          <label >
             <input
               type="radio"
               name="mode"
               onclick="onMode(this)"
               data-r="4"
               data-m="2"
+              data-h="1"
+
             />
             Easy
           </label>
@@ -30,16 +32,20 @@
               onclick="onMode(this)"
               data-r="8"
               data-m="14"
+              data-h="2"
+
             />
             Hard
           </label>
           <label>
             <input
+              checked
               type="radio"
               name="mode"
               onclick="onMode(this)"
               data-r="12"
               data-m="32"
+              data-h="3"
             />
             Expert
           </label>
@@ -49,7 +55,7 @@
     <div class="game-conainer">
       <div class="game-info">
         <h2 class="life">❤❤❤</h2>
-        <h3 class="timer">00:00</h3>
+        <h3 class="timer">0/s</h3>
         <h2 class="flags">🚩:<span>X</span></h2>
       </div>
       <table class="board"></table>

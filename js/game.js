@@ -1,11 +1,7 @@
 'use strict'
 
-//check win >flags
-//display win/lose msg
-//fix time 4 digits
 //cleanup
 //do bonuses
-
 
 
 const MINE = '💣'
@@ -21,7 +17,7 @@ var gTimerInterval
 const gLevel = {
     SIZE: 12,
     MINES: 32,
-
+    hearts: 3,
 }
 
 const gGame = {
@@ -29,7 +25,7 @@ const gGame = {
     shownCount: 0,
     markedCount: gLevel.MINES,
     secsPassed: 0,
-    hearts:3
+    lives: gLevel.hearts
 }
 
 
@@ -65,15 +61,18 @@ function renderBoard(board, selector = '.board') {
         for (var j = 0; j < board[0].length; j++) {
             const cell = board[i][j]
 
-            const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : cell.minesAroundCount
-            
+            const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : EMPTY
+
             ///// change last isMine to empty
             const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
-
             const flipped = cell.isShown ? 'flipped' : ''
-
             const className = `cell ${flipped}`
-            strHTML += `<td class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}> ${content} </td>`
+            const color = returnColor(cell.minesAroundCount)
+
+
+
+            strHTML += `<td class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}
+            style="color:${color} ;">${content} </td>`
         }
         strHTML += '</tr>'
     }
@@ -111,14 +110,17 @@ function setMinesNegsCount() {
 function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     startTimer()
+    if (curCell.isShown) return
     if (!curCell.minesAroundCount) {
         expandShown(gBoard, +cell.dataset.i, +cell.dataset.j)
-    } else if(curCell.isMine){
+
+    } else if (curCell.isMine) {
         checkGameOver()
     }
-
+    gGame.shownCount++
     cell.classList.add('flipped')
     curCell.isShown = true
+    checkVictory()
     renderBoard(gBoard)
 }
 
@@ -126,27 +128,32 @@ function cellRightClicked(cell) {
     //// FLAGS
     startTimer()
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
+    if (curCell.isShown) return
 
     if (curCell.isMarked) {
         curCell.isMarked = false
         gGame.markedCount += 1
 
     } else {
-        if(!gGame.markedCount)return
+        if (!gGame.markedCount) return
         curCell.isMarked = true
         gGame.markedCount -= 1
     }
-
+    checkVictory()
     renderBoard(gBoard)
 }
 
 
 function onMode(mode) {
     var flag = document.querySelector('.flags span')
+    var hearts = document.querySelector('.life')
     flag.innerText = mode.dataset.m
     gLevel.SIZE = mode.dataset.r
     gLevel.MINES = mode.dataset.m
     gGame.markedCount = mode.dataset.m
+    gLevel.hearts = mode.dataset.h
+    hearts.innerText = HEART.repeat(gLevel.hearts)
+
     restart()
 }
 
@@ -156,23 +163,25 @@ function startTimer() {
     const timer = document.querySelector('.game-info h3')
     if (gTimerInterval) return
     gTimerInterval = setInterval(function () {
-        timer.innerText = ++gGame.secsPassed
+        timer.innerText = ++gGame.secsPassed + '/s'
 
     }, 1000)
 }
 
 
-function restart(){
+function restart() {
     const endScreen = document.querySelector('.end-screen')
     const hearts = document.querySelector('.life')
     const timer = document.querySelector('.game-info h3')
     clearInterval(gTimerInterval)
-    timer.innerText = 0
-    gGame.hearts = 3
+    timer.innerText = 0 + '/s'
+    gGame.lives = gLevel.hearts
     gGame.secsPassed = 0
+    gGame.shownCount = 0
+    gGame.markedCount = gLevel.MINES
     gTimerInterval = null
-    endScreen.style.display = 'none' 
-    hearts.innerText = HEART.repeat(gGame.hearts)
+    endScreen.style.display = 'none'
+    hearts.innerText = HEART.repeat(gLevel.hearts)
     initGame()
 }
 
@@ -198,30 +207,50 @@ function expandShown(board, rowIdx, colIdx) {
         if (i < 0 || i >= board.length) continue
         for (var j = colIdx - 1; j <= colIdx + 1; j++) {
             if (j < 0 || j >= board[0].length) continue
+            if (i === rowIdx && j === colIdx) continue
+            if (!board[i][j].isShown) gGame.shownCount++
             if (!board[i][j].isMine) board[i][j].isShown = true
-            // if(!board[i][j].minesAroundCount)expandShown(gBoard,i,j)
+
+
         }
     }
 
 
 }
 
-function checkGameOver(){
-const hearts = document.querySelector('.life')
-gGame.hearts--
-hearts.innerText = HEART.repeat(gGame.hearts)
-if(!gGame.hearts){
-    clearInterval(gTimerInterval)
-    console.log('gameOver')
+function checkGameOver() {
+    const hearts = document.querySelector('.life')
+    const greet = document.querySelector('.greet')
     const endScreen = document.querySelector('.end-screen')
-    endScreen.style.display = 'flex' 
-    revealBoard(gBoard)
+    gGame.lives--
+    hearts.innerText = HEART.repeat(gGame.lives)
+    if (!gGame.lives) {
+        clearInterval(gTimerInterval)
+        console.log('gameOver')
+        greet.innerText = 'Solid effort'
+        endScreen.style.display = 'flex'
+        revealBoard(gBoard)
 
-}
-renderBoard(gBoard)
+    }
+    renderBoard(gBoard)
 }
 
-function revealBoard(board){
+
+function checkVictory() {
+    const endScreen = document.querySelector('.end-screen')
+    const greet = document.querySelector('.greet')
+    if (!gGame.markedCount && gGame.shownCount === gLevel.SIZE ** 2 - gLevel.MINES) {
+        clearInterval(gTimerInterval)
+        greet.innerText = 'Victory!'
+        endScreen.style.display = 'flex'
+
+
+    }
+}
+
+
+
+function revealBoard(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
             gBoard[i][j].isShown = true
@@ -229,7 +258,7 @@ function revealBoard(board){
     }
 }
 
-function getNegs(board, rowIdx, colIdx){
+function getNegs(board, rowIdx, colIdx) {
     var negs = []
     for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= board.length) continue
@@ -237,9 +266,30 @@ function getNegs(board, rowIdx, colIdx){
             if (j < 0 || j >= board[0].length) continue
             if (gBoard[i][j].isShown) continue
             if (gBoard[i][j].isMarked) continue
-            negs.push({i,j})
-                
+            negs.push({ i, j })
+
         }
     }
     return negs
+}
+
+function returnColor(num) {
+    switch (num) {
+        case 1:
+            return '#467917'
+        case 2:
+            return '#339720'
+        case 3:
+            return 'olive'
+        case 4:
+            return '#ad8332'
+        case 5:
+            return '#FF6B6B'
+        case 6:
+        case 7:
+        case 8:
+            return '#f21717'
+        default:
+            return ''
+    }
 }

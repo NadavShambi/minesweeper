@@ -243,6 +243,11 @@ label {
     animation: safe 1s linear infinite;
 }
 
+.lose{
+    background-color: #d97070e6;
+}
+
+
 @keyframes safe {
 
     0%,

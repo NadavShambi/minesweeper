@@ -21,12 +21,14 @@ const gGame = {
     markedCount: gLevel.MINES,
     secsPassed: 0,
     lives: gLevel.hearts,
-    hint: 1
+    hint: 1,
+    isLost: false
 }
 
 function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
     renderBoard(gBoard)
+
 }
 
 function buildBoard(rows, cols = rows) {
@@ -59,8 +61,10 @@ function renderBoard(board, selector = '.board') {
             ///// change last isMine to empty
             const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
             const flipped = cell.isShown ? 'flipped' : ''
-            const className = `cell cell-${i}-${j} ${flipped}`
+            const isLost = gGame.isLost ? 'lose' : ''
+            const className = `cell cell-${i}-${j} ${flipped} ${isLost}`
             const color = returnColor(cell.minesAroundCount)
+
 
             strHTML += `<td class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}
             style="color:${color} ;">${content} </td>`
@@ -101,6 +105,7 @@ function setMinesNegsCount() {
 function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
 
+    if(!gGame.isOn) return
     gGame.isOn = true
     startTimer(curCell)
 
@@ -149,6 +154,7 @@ function onMode(mode) {
     gGame.markedCount = mode.dataset.m
     gLevel.hearts = mode.dataset.h
     hearts.innerText = HEART.repeat(gLevel.hearts)
+    
 
     restart()
 }
@@ -156,7 +162,7 @@ function onMode(mode) {
 function startTimer(cell) {
     const timer = document.querySelector('.game-info h3')
     if (gTimerInterval) return
-    placeMines(gBoard, gLevel.MINES,cell)
+    placeMines(gBoard, gLevel.MINES, cell)
     setMinesNegsCount()
     gTimerInterval = setInterval(() => {
         ++gGame.secsPassed
@@ -183,6 +189,7 @@ function restart() {
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
     gGame.lives = gLevel.hearts
+    gGame.isOn = true
     gGame.secsPassed = 0
     gGame.shownCount = 0
     gGame.hint = 1
@@ -255,7 +262,11 @@ function checkVictory() {
 function revealBoard(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
-            if (gBoard[i][j].isMine) gBoard[i][j].isShown = true
+            if (gBoard[i][j].isMine) {
+                gBoard[i][j].isShown = true
+                gBoard[i][j].isLost = true
+
+            }
         }
     }
 }

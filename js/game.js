@@ -1,19 +1,13 @@
 'use strict'
 
-//cleanup
-//do bonuses
-
-
 const MINE = '💣'
 const EMPTY = '&nbsp;'
 const FLAG = '🚩'
 const HEART = '❤'
 const BROKEN_HEART = '💔'
 
-
 var gBoard
 var gTimerInterval
-
 
 const gLevel = {
     SIZE: 12,
@@ -30,11 +24,8 @@ const gGame = {
     hint: 1
 }
 
-
 function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
-    placeMines(gBoard, gLevel.MINES)
-    setMinesNegsCount()
     renderBoard(gBoard)
 }
 
@@ -71,8 +62,6 @@ function renderBoard(board, selector = '.board') {
             const className = `cell cell-${i}-${j} ${flipped}`
             const color = returnColor(cell.minesAroundCount)
 
-
-
             strHTML += `<td class="${className}" onclick="cellClicked(this)" oncontextmenu="cellRightClicked(this), event.preventDefault();" data-i=${i} data-j=${j}
             style="color:${color} ;">${content} </td>`
         }
@@ -86,11 +75,11 @@ function renderBoard(board, selector = '.board') {
     flag.innerText = gGame.markedCount
 }
 
-function placeMines(board, num) {
+function placeMines(board, num, cell) {
     var copy = []
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board.length; j++) {
-            if (board[i][j].isMine) continue
+            if (board[i][j].isMine || board[i][j] === cell) continue
             copy.push(board[i][j])
         }
     }
@@ -111,10 +100,9 @@ function setMinesNegsCount() {
 
 function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
-    
-    if(!gGame.isOn){}
+
     gGame.isOn = true
-    startTimer()
+    startTimer(curCell)
 
     if (curCell.isShown || curCell.isMarked) return
 
@@ -133,11 +121,10 @@ function cellClicked(cell) {
 }
 
 function cellRightClicked(cell) {
-    //// FLAGS
-    if(!gGame.isOn)return
-    startTimer()
-
+    if (!gGame.isOn) return
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
+    startTimer(curCell)
+
     if (curCell.isShown) return
 
     if (curCell.isMarked) {
@@ -153,7 +140,6 @@ function cellRightClicked(cell) {
     renderBoard(gBoard)
 }
 
-
 function onMode(mode) {
     var flag = document.querySelector('.flags span')
     var hearts = document.querySelector('.life')
@@ -167,11 +153,11 @@ function onMode(mode) {
     restart()
 }
 
-
-
-function startTimer() {
+function startTimer(cell) {
     const timer = document.querySelector('.game-info h3')
     if (gTimerInterval) return
+    placeMines(gBoard, gLevel.MINES,cell)
+    setMinesNegsCount()
     gTimerInterval = setInterval(() => {
         ++gGame.secsPassed
         var displayMins = Math.floor(gGame.secsPassed / 60)
@@ -184,11 +170,9 @@ function startTimer() {
             displayMins = '0' + displayMins
         }
 
-
         timer.innerText = `${displayMins}:${displaySecs}`
     }, 1000)
 }
-
 
 function restart() {
     const endScreen = document.querySelector('.end-screen')
@@ -196,10 +180,8 @@ function restart() {
     const timer = document.querySelector('.game-info h3')
     const hint = document.querySelector('.hint')
     hint.style.animation = 'none'
-
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
-    // gGame.isOn = true
     gGame.lives = gLevel.hearts
     gGame.secsPassed = 0
     gGame.shownCount = 0
@@ -210,8 +192,6 @@ function restart() {
     hearts.innerText = HEART.repeat(gLevel.hearts)
     initGame()
 }
-
-
 
 function expandShown(board, rowIdx, colIdx) {
     const negs = []
@@ -259,7 +239,6 @@ function checkGameOver() {
     renderBoard(gBoard)
 }
 
-
 function checkVictory() {
     const endScreen = document.querySelector('.end-screen')
     const greet = document.querySelector('.greet')
@@ -273,8 +252,6 @@ function checkVictory() {
     }
 }
 
-
-
 function revealBoard(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
@@ -282,8 +259,6 @@ function revealBoard(board) {
         }
     }
 }
-
-
 
 function returnColor(num) {
     switch (num) {

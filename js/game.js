@@ -113,6 +113,7 @@ function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     if(!gGame.isOn)return
     startTimer()
+
     if (curCell.isShown || curCell.isMarked) return
 
     curCell.isShown = true

@@ -63,7 +63,6 @@ body {
     text-decoration: underline 3px solid var(--pr-dark-cr);
 }
 
-
 .nav-hints .active{
     background: #72b672;
     width: 150px;
@@ -290,7 +289,6 @@ label {
 .lose {
     background-color: #c01313;
 }
-
 
 @keyframes safe {
 

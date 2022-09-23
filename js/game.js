@@ -148,7 +148,7 @@ function cellClicked(cell) {
 }
 
 function cellRightClicked(cell) {
-    if (!gGame.isOn) return
+    if (!gGame.isOn || gModes.bigHint || gModes.twoCorners) return
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     startTimer(curCell)
 
@@ -207,20 +207,9 @@ function startTimer(cell) {
 function restart() {
     const endScreen = document.querySelector('.end-screen')
     const hearts = document.querySelector('.life')
-    const timer = document.querySelector('.game-info h3')
-    const hint = document.querySelector('.hint')
-    hint.style.animation = 'none'
-    clearInterval(gTimerInterval)
-    timer.innerText = '00:00'
-    gTimerInterval = null
-    gGame.lives = gLevel.hearts
-    gGame.isOn = true
-    gGame.secsPassed = 0
-    gGame.shownCount = 0
-    gGame.isLost = false
-    gGame.markedCount = gLevel.MINES
     endScreen.style.display = 'none'
     hearts.innerText = HEART.repeat(gLevel.hearts)
+    refreshGgame()
     refreshModes()
     initGame()
 }
@@ -450,7 +439,6 @@ function twoCorners(cell) {
     gModes.twoCorners = false
 }
 
-
 function refreshModes(){
     const modes = document.querySelectorAll('li')
     for(var i = 0; i < modes.length ; i++){
@@ -459,4 +447,17 @@ function refreshModes(){
     gGame.hint = 3
     gGame.bigHint = 3
     gGame.selectCorners = 3
+}
+
+function refreshGgame(){
+    const timer = document.querySelector('.game-info h3')
+    clearInterval(gTimerInterval)
+    timer.innerText = '00:00'
+    gTimerInterval = null
+    gGame.lives = gLevel.hearts
+    gGame.isOn = true
+    gGame.secsPassed = 0
+    gGame.shownCount = 0
+    gGame.isLost = false
+    gGame.markedCount = gLevel.MINES
 }

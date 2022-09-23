@@ -21,7 +21,7 @@ const gGame = {
     markedCount: gLevel.MINES,
     secsPassed: 0,
     lives: gLevel.hearts,
-    hint: 1,
+    hint: 3,
     isLost: false
 }
 
@@ -162,6 +162,8 @@ function onMode(mode) {
 function startTimer(cell) {
     const timer = document.querySelector('.game-info h3')
     if (gTimerInterval) return
+
+    //// add mode condition here/ normal modeV
     placeMines(gBoard, gLevel.MINES, cell)
     setMinesNegsCount()
     gTimerInterval = setInterval(() => {
@@ -290,6 +292,20 @@ function returnColor(num) {
     }
 }
 
+
+
+
+/////hints menu
+
+function toggleMenu(){
+    const nav = document.querySelector('.nav-hints')
+    const menu = nav.querySelector('.menu')
+    nav.classList.toggle('active')
+    menu.classList.toggle('active')
+}
+
+
+
 function hint() {
     const hint = document.querySelector('.hint')
     if (!gGame.hint || !gGame.isOn) return
@@ -306,5 +322,6 @@ function hint() {
     var selector = `.cell-${drawn.value[0].i}-${drawn.value[0].j}`
     const cell = document.querySelector(selector)
     cell.classList.add('safe')
+    toggleMenu()
 }
 

@@ -22,8 +22,17 @@ const gGame = {
     secsPassed: 0,
     lives: gLevel.hearts,
     hint: 3,
-    isLost: false
+    bigHint: 3,
+    selectCorners: 3,
+    isLost: false,
 }
+
+const gModes = {
+    bigHint: false,
+    twoCorners: false,
+
+}
+
 
 function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
@@ -61,7 +70,7 @@ function renderBoard(board, selector = '.board') {
             ///// change last isMine to empty
             const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
             const flipped = cell.isShown ? 'flipped' : ''
-            const isLost = gGame.isLost&&cell.isMine ? 'lose':''
+            const isLost = gGame.isLost && cell.isMine ? 'lose' : ''
             const className = `cell cell-${i}-${j} ${flipped} ${isLost}`
             const color = returnColor(cell.minesAroundCount)
 
@@ -105,7 +114,20 @@ function setMinesNegsCount() {
 function cellClicked(cell) {
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
 
-    if(!gGame.isOn) return
+    if (!gGame.isOn) return
+
+    if (gModes.bigHint) {
+        reveal3x3(cell)
+        gModes.bigHint = false
+        return
+    }
+
+    if (gModes.twoCorners) {
+        twoCorners(cell)
+        return
+    }
+
+
     gGame.isOn = true
     startTimer(curCell)
 
@@ -154,7 +176,7 @@ function onMode(mode) {
     gGame.markedCount = mode.dataset.m
     gLevel.hearts = mode.dataset.h
     hearts.innerText = HEART.repeat(gLevel.hearts)
-    
+
 
     restart()
 }
@@ -190,16 +212,16 @@ function restart() {
     hint.style.animation = 'none'
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
+    gTimerInterval = null
     gGame.lives = gLevel.hearts
     gGame.isOn = true
     gGame.secsPassed = 0
     gGame.shownCount = 0
-    gGame.hint = 1
     gGame.isLost = false
     gGame.markedCount = gLevel.MINES
-    gTimerInterval = null
     endScreen.style.display = 'none'
     hearts.innerText = HEART.repeat(gLevel.hearts)
+    refreshModes()
     initGame()
 }
 
@@ -294,10 +316,9 @@ function returnColor(num) {
 
 
 
-
 /////hints menu
 
-function toggleMenu(){
+function toggleMenu() {
     const nav = document.querySelector('.nav-hints')
     const menu = nav.querySelector('.menu')
     nav.classList.toggle('active')
@@ -306,22 +327,136 @@ function toggleMenu(){
 
 
 
-function hint() {
+function hint(op) {
+    toggleMenu()
     const hint = document.querySelector('.hint')
-    if (!gGame.hint || !gGame.isOn) return
+    if (!gGame.hint || !gTimerInterval) return
     hint.style.animation = 'bulb 1s linear forwards'
     gGame.hint--
+    if(!gGame.hint) op.classList.add('used')
     const safeCells = []
     for (var i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard.length; j++) {
             if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) safeCells.push({ i, j })
         }
     }
-    var drawn = drawRandom(safeCells)
+    const drawn = drawRandom(safeCells)
     console.log(drawn);
-    var selector = `.cell-${drawn.value[0].i}-${drawn.value[0].j}`
+    const selector = `.cell-${drawn.value[0].i}-${drawn.value[0].j}`
     const cell = document.querySelector(selector)
     cell.classList.add('safe')
-    toggleMenu()
 }
 
+
+
+function bigHint() {
+    toggleMenu()
+    if (!gTimerInterval) return
+    if (!gGame.bigHint) return
+    if (gModes.twoCorners) return
+    gModes.bigHint = true
+}
+
+
+function reveal3x3(cell) {
+    const row = +cell.dataset.i
+    const col = +cell.dataset.j
+    if (gBoard[row][col].isShown) return
+    gGame.bigHint--
+    if(!gGame.bigHint) document.querySelector('.big-hint').classList.add('used')
+    console.log(row, col);
+
+    const negs = []
+    for (var i = row - 1; i <= row + 1; i++) {
+        if (i < 0 || i > gBoard.length) continue
+        for (var j = col - 1; j <= col + 1; j++) {
+            if (j < 0 || j > gBoard.length) continue
+            if (!gBoard[i][j].isShown) {
+                negs.push(gBoard[i][j])
+                gBoard[i][j].isShown = true
+            }
+        }
+    }
+    renderBoard(gBoard)
+
+    setTimeout(() => {
+        for (var i = 0; i < negs.length; i++) {
+            negs[i].isShown = false
+
+        }
+        renderBoard(gBoard)
+    }, 1000);
+
+}
+
+function cornersHint(op) {
+    toggleMenu()
+    if (!gTimerInterval) return
+    if (!gGame.selectCorners) return
+    if (gModes.bigHint) return
+    gModes.twoCorners = true
+    gGame.selectCorners--
+    if(!gGame.selectCorners) op.classList.add('used')
+}
+
+
+
+
+function twoCorners(cell) {
+    if (!gGame.lastCell) {
+        gGame.lastCell = cell
+        cell.classList.add('safe')
+        return
+    }
+    const lastCellCoord = { i: gGame.lastCell.dataset.i, j: gGame.lastCell.dataset.j }
+    const curCellCoord = { i: cell.dataset.i, j: cell.dataset.j }
+
+    console.log(lastCellCoord);
+    console.log(curCellCoord);
+
+    const startRow = (lastCellCoord.i > curCellCoord.i) ? curCellCoord.i : lastCellCoord.i
+    const endRow = (lastCellCoord.i > curCellCoord.i) ? lastCellCoord.i : curCellCoord.i
+
+    const startCol = (lastCellCoord.j > curCellCoord.j) ? curCellCoord.j : lastCellCoord.j
+    const endCol = (lastCellCoord.j > curCellCoord.j) ? lastCellCoord.j : curCellCoord.j
+
+    console.log(startRow);
+    console.log(endRow);
+
+    console.log(startCol);
+    console.log(endRow);
+
+    const negs = []
+    for (var i = startRow; i <= endRow; i++) {
+        for (var j = startCol; j <= endCol; j++){
+            if (!gBoard[i][j].isShown) {
+                negs.push(gBoard[i][j])
+                gBoard[i][j].isShown = true
+            }
+        }
+    }
+
+    renderBoard(gBoard)
+
+    setTimeout(() => {
+        for (var i = 0; i < negs.length; i++) {
+            negs[i].isShown = false
+
+        }
+        renderBoard(gBoard)
+    }, 1000);
+
+    gGame.lastCell = null
+    gModes.twoCorners = false
+}
+
+
+function refreshModes(){
+    const modes = document.querySelectorAll('li')
+    for(var i = 0; i < modes.length ; i++){
+        modes[i].classList.remove('used')
+    }
+    gGame.hint = 3
+    gGame.bigHint = 3
+    gGame.selectCorners = 3
+}

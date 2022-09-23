@@ -84,8 +84,7 @@ body {
      ;
     list-style: none;
     color: var(--pr-dark-cr);
-    gap: 5px;
-    top: 10px;
+    
 }
 
 .nav-hints ul li{
@@ -93,13 +92,17 @@ body {
     width: 100%;
     text-align: left;
     border-bottom: 1px solid var(--pr-dark-cr);
-    padding-left: 7px;
+    overflow: hidden;
 }
 
 .nav-hints.active ul{
     display: flex;
 }
 
+.used{
+    cursor: not-allowed;
+    background: rgb(204, 117, 117);
+}
 
 
 .choose-level {

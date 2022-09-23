@@ -314,6 +314,14 @@ label {
         width: 445px;
     }
 
+    .menu{
+        font-size: 20px;
+        top: -90px;
+    }
+    .nav-hints ul{
+        bottom: 28px;
+    }
+
     .game-info {
         width: 445px;
     }

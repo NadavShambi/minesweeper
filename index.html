@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body onload="initGame()">
-    <div class="title"><h1>Minesweeper</h1></div>
+    <div class="title"><h1>Minesweeper <span>💣</span></h1></div>
     <div class="choose-level">
       <div class="nav-hints">
-        <div class="menu" onclick="toggleMenu(this)">Menu</div>
+        <div class="menu" onclick="toggleMenu(this)"></div>
         <ul>
           <li
             style="--i: 0"
             onclick="hint(this)"
-            title="3 hints a game, not going to work on first click"
+            title="3 hints a game, not going to work on first click. Available after the game starts."
             class="hint"
           >
             1x1 hint
@@ -24,7 +24,7 @@
           <li
             style="--i: 1"
             onclick="bigHint()"
-            title="3 hints a game, not going to work on first click"
+            title="3 hints a game, not going to work on first click. Available after the game starts."
             class="big-hint hint"
           >
             3x3 hint
@@ -32,19 +32,19 @@
           <li
             style="--i: 2"
             onclick="cornersHint(this)"
-            title="3 hints a game, not going to work on first click"
+            title="3 hints a game, not going to work on first click. Available after the game starts."
             class="hint"
 
           >
             two corners
           </li>
-          <li style="--i: 3" onclick="sevenBoom()">7boom</li>
+          <li style="--i: 3" onclick="sevenBoom()" title="Place mines in every 7th cell or a cell that ends with 7.">7boom</li>
           <li style="--i: 4" onclick="usersBoard()">createboard</li>
         </ul>
       </div>
       <h2 class="lev">Choose Your Level:</h2>
       <form action="get">
-        <label>
+        <label title="4x4 Board, 2 Mines, 1 Life and 9 Hints ">
           <input
             type="radio"
             name="mode"
@@ -55,7 +55,7 @@
           />
           Easy
         </label>
-        <label>
+        <label title="8x8 Board, 14 Mines, 2 Life and 9 Hints ">
           <input
             type="radio"
             name="mode"
@@ -66,7 +66,7 @@
           />
           Hard
         </label>
-        <label>
+        <label title="12x12 Board, 32 Mines, 3 Life and 9 Hints ">
           <input
             checked
             type="radio"

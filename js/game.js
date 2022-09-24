@@ -9,6 +9,10 @@ const BROKEN_HEART = '💔'
 var gBoard
 var gTimerInterval
 
+const history = []
+
+
+
 const gLevel = {
     SIZE: 12,
     MINES: 32,
@@ -83,6 +87,8 @@ function renderBoard(board, selector = '.board') {
     }
     strHTML += '</tbody></table>'
 
+    saveHistory()
+
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML
     var flag = document.querySelector('.flags span')
@@ -128,8 +134,9 @@ function cellClicked(cell) {
         return
     }
 
-    if (gModes.usersBoard && gModes.userMarks < gLevel.MINES) {
+    if (gModes.usersBoard) {
         userMarks(curCell)
+        
         return
     }
     gGame.isOn = true
@@ -190,7 +197,7 @@ function startTimer(cell) {
     if (gTimerInterval) return
     refreshModes()
     //// add mode condition here/ normal modeV
-    if (!gModes.sevenBoom && !gModes.createBoard) placeMines(gBoard, gLevel.MINES, cell)
+    if (!gModes.sevenBoom && !gModes.userMarks) placeMines(gBoard, gLevel.MINES, cell)
     setMinesNegsCount()
     gTimerInterval = setInterval(() => {
         ++gGame.secsPassed
@@ -214,7 +221,8 @@ function restart() {
     endScreen.style.display = 'none'
     hearts.innerText = HEART.repeat(gLevel.hearts)
     gModes.sevenBoom = false
-    gModes.usersBoard = false
+    gModes.usersBoard = false 
+    gModes.userMarks = 0
     refreshGgame()
     initGame()
 }
@@ -492,8 +500,32 @@ function usersBoard() {
 }
 
 function userMarks(cell) {
-    if (gModes.userMarks === gLevel.MINES) return
-       
-        cell.isMine = true
+    gModes.userMarks++
+    cell.isMine = true
+    cell.isShown = true
+    console.log(cell);
     renderBoard(gBoard)
+    if (gModes.userMarks === +gLevel.MINES){
+        gModes.usersBoard = false
+        flipMines()
+    } 
+}
+
+function flipMines(){
+    for (let i = 0; i < gBoard.length; i++) {
+        for (let j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMine) {
+                gBoard[i][j].isShown = false
+            }
+        }
+    }
+}
+
+function saveHistory(){
+    /// add a booli with return for the btn
+    history.push({
+        board:gBoard,
+        state:gGame,
+        mode:gModes
+    })
 }

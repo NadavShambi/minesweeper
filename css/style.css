@@ -87,6 +87,8 @@ body {
     border-bottom: 1px solid var(--pr-dark-cr);
     display: none;
     transition: 1s;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .nav-hints.active ul{
@@ -95,10 +97,8 @@ body {
     height: 300px;
     flex-direction: column;
     align-items: flex-start ;
-    justify-content: space-evenly;
-    z-index: 3;
-    background: linear-gradient( 45deg,#499349,#499349e5)
-    ;
+    z-index: 1;
+    background: linear-gradient( 45deg,#499349,#499349e5);
     opacity: 1;
     transform: translateX(0px);
 
@@ -355,9 +355,11 @@ label {
     .choose-level h2 {
         font-size: 27px;
     }
-
-    .hint {
+    .nav-hints{
         transform: scale(0.7);
+        top: 75px;
+        left: 10px;
+        z-index: 5;
     }
 
     .cell {

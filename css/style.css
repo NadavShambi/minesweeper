@@ -337,6 +337,18 @@ label {
     background-color: #c01313;
 }
 
+footer{
+    border-top: 2px solid var(--pr-dark-cr);
+    height: 50px;
+    background: var(--pr-light-cr);
+    width: 100%;
+    text-align: center;
+    display: grid;
+    place-content: center;
+    margin-top: auto;
+    
+}
+
 @keyframes safe {
 
     0%,

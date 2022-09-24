@@ -21,29 +21,41 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(315deg, #234, #3459);
+    background: linear-gradient(315deg, rgb(170, 185, 199), rgba(81, 104, 128, 0.6));
     background-color: olive;
     background-repeat: no-repeat;
 }
 
 .title {
     height: 90px;
-    background: #3e8c3e;
+    background: #27292759;
     width: var(--container-width);
     text-align: center;
     font-size: 34px;
-    color: var(--pr-dark-cr);
-    text-shadow:
-        5px 5px var(--pr-light-cr),
-        10px 10px var(--pr-dark-cr);
     border-top-left-radius: 25% 50%;
     border-top-right-radius: 25% 50%;
-    border-top: 8px groove #90c990;
+    border-top: 8px groove #8f9e8f;
 }
 
-.title h1{
+.title h1 {
+    color: #669222;
+    text-shadow:
+        2px 5px var(--pr-light-cr),
+        5px 5px var(--pr-dark-cr);
+    letter-spacing: .1em;
     position: relative;
-    /* font-family: 'Changa One', cursive; */
+    font-family: 'Changa One', cursive;
+    animation: title 12s linear infinite;
+    font-weight:400 ;
+}
+
+@keyframes title {
+    0%{
+        filter: hue-rotate(0deg);
+    }
+    100%{
+        filter: hue-rotate(360deg);
+    }
 }
 
 .nav-hints {
@@ -60,7 +72,7 @@ body {
 
 }
 
-.menu{
+.menu {
     position: absolute;
     top: -60px;
     width: 100%;
@@ -68,15 +80,13 @@ body {
     color: var(--pr-dark-cr);
     text-decoration: underline 3px solid var(--pr-dark-cr);
     transition: 0.5s;
-    
+
 }
 
-
-
-.menu.active{
+.menu.active {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
-    background: #adc5ad;
+    background: #d2d8d2;
     width: 150px;
     border-radius: none;
     text-decoration: none;
@@ -84,7 +94,7 @@ body {
 
 }
 
-.nav-hints ul{
+.nav-hints ul {
     position: relative;
     list-style: none;
     color: var(--pr-dark-cr);
@@ -92,7 +102,7 @@ body {
     transform: translateX(-150px);
 }
 
-.nav-hints ul li{
+.nav-hints ul li {
     position: relative;
     border-top: 1px solid var(--pr-dark-cr);
     display: none;
@@ -102,21 +112,21 @@ body {
     overflow: hidden;
 }
 
-.nav-hints.active ul{
+.nav-hints.active ul {
     display: flex;
     width: 150px;
     height: 300px;
     flex-direction: column;
-    align-items: flex-start ;
+    align-items: flex-start;
     z-index: 1;
-    background: #adc5ad;
+    background: #d2d8d2;
     transform: translateX(0px);
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
 
 }
 
-.nav-hints.active ul li{
+.nav-hints.active ul li {
     width: 100%;
     font-size: 20px;
     left: 0;
@@ -125,11 +135,10 @@ body {
 
 }
 
-.used{
+.used {
     cursor: not-allowed;
     background: #cc7575;
 }
-
 
 .choose-level {
     display: flex;
@@ -140,7 +149,7 @@ body {
     width: var(--container-width);
     position: relative;
     box-shadow: -5px 0 15px var(--pr-light-cr),
-    15px 10px 20px #527279;
+        15px 10px 20px #527279;
 }
 
 .choose-level h2 {
@@ -155,7 +164,7 @@ body {
     justify-content: space-evenly;
     font-size: 35px;
     overflow: hidden;
-    
+
 }
 
 label {
@@ -200,7 +209,7 @@ label {
 .timer {
     font-family: 'Orbitron', sans-serif;
     font-size: 30px;
-    color: rgb(42, 97, 42);
+    color: var(--pr-dark-cr);
     background: var(--glass);
     width: 130px;
     height: 30px;
@@ -234,7 +243,7 @@ label {
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     box-shadow: -3px 0 15px var(--pr-light-cr),
-    15px 10px 15px #527279;
+        15px 10px 15px #527279;
 
 }
 
@@ -242,7 +251,7 @@ label {
     border-radius: 3px;
     display: flex;
     justify-content: center;
-    
+
 }
 
 .board table {
@@ -254,18 +263,26 @@ label {
     height: 40px;
     text-align: center;
     width: 40px;
-    box-shadow: 0 0 0 3px #000,
-        inset -5px -5px 0 3px #9995,
-        inset 2px 2px 0 2px #9995,
+    box-shadow: 0 0 0 .2px #000,
+        inset -5px -5px 0 3px #9992,
+        inset 2px 2px 0 2px #9992,
         inset -2.5px -2.5px 3px #000;
-    background: linear-gradient(235deg, #aaaa60 5%, #518c6eb1 60%);
+    background: linear-gradient(315deg, #8f8d8d 5%, #b8b8b8 60%);
     cursor: pointer;
     font-size: 1em;
     user-select: none;
-    border-radius: 7px;
+    /* border-radius: 7px; */
     display: grid;
     place-items: center;
+    transition: background 1s;
 }
+.cell:active{
+    box-shadow: 0 0 0 .2px #000,
+    inset -5px -5px 0 3px #9992,
+    inset 2px 2px 0 2px #9992,
+    inset -1.5px -1.5px 3px #000;
+}
+
 
 .flipped {
     background: var(--glass);
@@ -334,18 +351,26 @@ label {
 
 @media screen and (max-height: 1000px) {
 
-    .title{
+    .title {
         width: 445px;
     }
+
     .choose-level {
         width: 445px;
     }
 
-    .menu{
+    .title h1 {
+        text-shadow:
+        1px 3px #8fc7adfd,
+        4px 4px var(--pr-dark-cr);
+    }
+
+    .menu {
         font-size: 20px;
         top: -90px;
     }
-    .nav-hints ul{
+
+    .nav-hints ul {
         bottom: 28px;
     }
 
@@ -372,17 +397,19 @@ label {
     .choose-level h2 {
         font-size: 27px;
     }
-    .choose-level form{
+
+    .choose-level form {
         font-size: 25px;
         align-items: flex-end;
     }
-    .nav-hints{
+
+    .nav-hints {
         transform: scale(0.7);
         top: 75px;
         left: 10px;
         z-index: 5;
     }
-    
+
     .cell {
         height: 30px;
         width: 30px;
@@ -399,3 +426,79 @@ label {
     }
 }
 
+@media screen and (max-width: 650px) {
+
+    .title {
+        width: 445px;
+    }
+
+    .choose-level {
+        width: 445px;
+    }
+
+    .title h1 {
+        text-shadow:
+        1px 3px #8fc7adfd,
+        4px 4px var(--pr-dark-cr);
+    }
+
+    .menu {
+        font-size: 20px;
+        top: -90px;
+    }
+
+    .nav-hints ul {
+        bottom: 28px;
+    }
+
+
+
+    .game-info {
+        width: 445px;
+    }
+
+    .game-conainer {
+        width: 400px;
+        height: 380px;
+    }
+
+    .title {
+        font-size: 20px;
+        height: 60px;
+    }
+
+    .choose-level {
+        height: 80px;
+    }
+
+    .choose-level h2 {
+        font-size: 27px;
+    }
+
+    .choose-level form {
+        font-size: 25px;
+        align-items: flex-end;
+    }
+
+    .nav-hints {
+        transform: scale(0.7);
+        top: 75px;
+        left: 10px;
+        z-index: 5;
+    }
+
+    .cell {
+        height: 30px;
+        width: 30px;
+    }
+
+    .life,
+    .timer {
+        font-size: 30px;
+        height: 40px;
+    }
+
+    .flags {
+        font-size: 20px;
+    }
+}

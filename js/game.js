@@ -9,10 +9,6 @@ const BROKEN_HEART = '💔'
 var gBoard
 var gTimerInterval
 
-const history = []
-
-
-
 const gLevel = {
     SIZE: 12,
     MINES: 32,
@@ -86,9 +82,6 @@ function renderBoard(board, selector = '.board') {
         strHTML += '</tr>'
     }
     strHTML += '</tbody></table>'
-
-    saveHistory()
-
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML
     var flag = document.querySelector('.flags span')
@@ -262,7 +255,6 @@ function checkGameOver() {
     hearts.innerText = HEART.repeat(gGame.lives)
     if (!gGame.lives) {
         clearInterval(gTimerInterval)
-        console.log('gameOver')
         greet.innerText = 'Solid effort'
         endScreen.style.display = 'flex'
         revealMines(gBoard)
@@ -341,7 +333,6 @@ function hint(op) {
         }
     }
     const drawn = drawRandom(safeCells)
-    console.log(drawn);
     const selector = `.cell-${drawn.value[0].i}-${drawn.value[0].j}`
     const cell = document.querySelector(selector)
     cell.classList.add('safe')
@@ -361,7 +352,6 @@ function reveal3x3(cell) {
     if (gBoard[row][col].isShown) return
     gGame.bigHint--
     if (!gGame.bigHint) document.querySelector('.big-hint').classList.add('used')
-    console.log(row, col);
 
     const negs = []
     for (var i = row - 1; i <= row + 1; i++) {
@@ -404,27 +394,18 @@ function twoCorners(cell) {
     }
     const lastCellCoord = { i: gGame.lastCell.dataset.i, j: gGame.lastCell.dataset.j }
     const curCellCoord = { i: cell.dataset.i, j: cell.dataset.j }
-
-    console.log(lastCellCoord);
-    console.log(curCellCoord);
-
+ 
     const startRow = (lastCellCoord.i > curCellCoord.i) ? curCellCoord.i : lastCellCoord.i
     const endRow = (lastCellCoord.i > curCellCoord.i) ? lastCellCoord.i : curCellCoord.i
 
     const startCol = (lastCellCoord.j > curCellCoord.j) ? curCellCoord.j : lastCellCoord.j
     const endCol = (lastCellCoord.j > curCellCoord.j) ? lastCellCoord.j : curCellCoord.j
 
-    console.log(startRow);
-    console.log(endRow);
-
-    console.log(startCol);
-    console.log(endRow);
-
-    const negs = []
+    const revealed = []
     for (var i = startRow; i <= endRow; i++) {
         for (var j = startCol; j <= endCol; j++) {
             if (!gBoard[i][j].isShown) {
-                negs.push(gBoard[i][j])
+                revealed.push(gBoard[i][j])
                 gBoard[i][j].isShown = true
             }
         }
@@ -433,12 +414,12 @@ function twoCorners(cell) {
     renderBoard(gBoard)
 
     setTimeout(() => {
-        for (var i = 0; i < negs.length; i++) {
-            negs[i].isShown = false
+        for (var i = 0; i < revealed.length; i++) {
+            revealed[i].isShown = false
 
         }
         renderBoard(gBoard)
-    }, 1000);
+    }, 1500);
 
     gGame.lastCell = null
     gModes.twoCorners = false
@@ -477,16 +458,13 @@ function unableHints() {
 function sevenBoom() {
     restart()
     gModes.sevenBoom = true
-    const cells = []
+    var k = 0
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
-            cells.push({ i, j })
-        }
-    }
-    for (let k = 0; k < cells.length; k++) {
-        if (!k) continue
-        if (k % 7 === 6 || (k + 4) % 10 === 0) {
-            gBoard[cells[k].i][cells[k].j].isMine = true
+            k++
+            if (k % 7 === 0 || (k + 3) % 10 === 0) {
+                gBoard[i][j].isMine = true
+            }
         }
     }
     renderBoard(gBoard)
@@ -500,15 +478,15 @@ function usersBoard() {
 }
 
 function userMarks(cell) {
+    if(cell.isMine)return
     gModes.userMarks++
     cell.isMine = true
     cell.isShown = true
-    console.log(cell);
-    renderBoard(gBoard)
     if (gModes.userMarks === +gLevel.MINES){
         gModes.usersBoard = false
         flipMines()
     } 
+    renderBoard(gBoard)
 }
 
 function flipMines(){
@@ -519,13 +497,4 @@ function flipMines(){
             }
         }
     }
-}
-
-function saveHistory(){
-    /// add a booli with return for the btn
-    history.push({
-        board:gBoard,
-        state:gGame,
-        mode:gModes
-    })
 }

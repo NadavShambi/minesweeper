@@ -14,32 +14,39 @@
         <div class="menu" onclick="toggleMenu(this)">Menu</div>
         <ul>
           <li
-            style="--i: 0"
             onclick="hint(this)"
-            title="3 hints a game, not going to work on first click. Available after the game starts."
+            title="3 hints a game, 1 safe spot will glow on the board. Available after the game starts."
             class="hint"
           >
-            1x1 hint
+            Hint
           </li>
           <li
-            style="--i: 1"
             onclick="bigHint()"
-            title="3 hints a game, not going to work on first click. Available after the game starts."
+            title="3 hints a game, click on board to check for mines in a 3x3 area. Available after the game starts."
             class="big-hint hint"
           >
-            3x3 hint
+            Mega Hint
           </li>
           <li
-            style="--i: 2"
             onclick="cornersHint(this)"
-            title="3 hints a game, not going to work on first click. Available after the game starts."
+            title="3 hints a game, pick two cells to check the area between them for mines. Available after the game starts."
             class="hint"
-
           >
-            two corners
+            Two Corners
           </li>
-          <li style="--i: 3" onclick="sevenBoom()" title="Place mines in every 7th cell or a cell that ends with 7.">7boom</li>
-          <li style="--i: 4" onclick="usersBoard()">createboard</li>
+          <li
+            onclick="sevenBoom()"
+            title="Place mines in every 7th cell or a cell that ends with 7."
+          >
+            7boom
+          </li>
+          <li
+           
+            onclick="usersBoard()"
+            title="Challenge your friends! Create a costume made board by placing each mine(mines count according to currnt level) manually."
+          >
+            createboard
+          </li>
         </ul>
       </div>
       <h2 class="lev">Choose Your Level:</h2>

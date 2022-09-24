@@ -30,14 +30,15 @@ const gGame = {
 const gModes = {
     bigHint: false,
     twoCorners: false,
-
+    sevenBoom: false,
+    usersBoard: false,
+    userMarks: 0
 }
-
 
 function initGame() {
     gBoard = buildBoard(gLevel.SIZE)
     renderBoard(gBoard)
-
+    unableHints()
 }
 
 function buildBoard(rows, cols = rows) {
@@ -127,7 +128,10 @@ function cellClicked(cell) {
         return
     }
 
-
+    if (gModes.usersBoard && gModes.userMarks < gLevel.MINES) {
+        userMarks(curCell)
+        return
+    }
     gGame.isOn = true
     startTimer(curCell)
 
@@ -148,7 +152,7 @@ function cellClicked(cell) {
 }
 
 function cellRightClicked(cell) {
-    if (!gGame.isOn || gModes.bigHint || gModes.twoCorners) return
+    if (!gGame.isOn || gModes.bigHint || gModes.twoCorners || gModes.usersBoard) return
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     startTimer(curCell)
 
@@ -184,9 +188,9 @@ function onMode(mode) {
 function startTimer(cell) {
     const timer = document.querySelector('.game-info h3')
     if (gTimerInterval) return
-
+    refreshModes()
     //// add mode condition here/ normal modeV
-    placeMines(gBoard, gLevel.MINES, cell)
+    if (!gModes.sevenBoom && !gModes.createBoard) placeMines(gBoard, gLevel.MINES, cell)
     setMinesNegsCount()
     gTimerInterval = setInterval(() => {
         ++gGame.secsPassed
@@ -209,8 +213,9 @@ function restart() {
     const hearts = document.querySelector('.life')
     endScreen.style.display = 'none'
     hearts.innerText = HEART.repeat(gLevel.hearts)
+    gModes.sevenBoom = false
+    gModes.usersBoard = false
     refreshGgame()
-    refreshModes()
     initGame()
 }
 
@@ -252,7 +257,7 @@ function checkGameOver() {
         console.log('gameOver')
         greet.innerText = 'Solid effort'
         endScreen.style.display = 'flex'
-        revealBoard(gBoard)
+        revealMines(gBoard)
         hearts.innerText = BROKEN_HEART
         gGame.isOn = false
         gGame.isLost = true
@@ -274,7 +279,7 @@ function checkVictory() {
     }
 }
 
-function revealBoard(board) {
+function revealMines(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 0; j < board[0].length; j++) {
             if (gBoard[i][j].isMine) gBoard[i][j].isShown = true
@@ -303,18 +308,16 @@ function returnColor(num) {
     }
 }
 
-
-
 /////hints menu
-
 function toggleMenu() {
     const nav = document.querySelector('.nav-hints')
     const menu = nav.querySelector('.menu')
     nav.classList.toggle('active')
     menu.classList.toggle('active')
+    if (!gTimerInterval) {
+
+    }
 }
-
-
 
 function hint(op) {
     toggleMenu()
@@ -322,7 +325,7 @@ function hint(op) {
     if (!gGame.hint || !gTimerInterval) return
     hint.style.animation = 'bulb 1s linear forwards'
     gGame.hint--
-    if(!gGame.hint) op.classList.add('used')
+    if (!gGame.hint) op.classList.add('used')
     const safeCells = []
     for (var i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard.length; j++) {
@@ -336,8 +339,6 @@ function hint(op) {
     cell.classList.add('safe')
 }
 
-
-
 function bigHint() {
     toggleMenu()
     if (!gTimerInterval) return
@@ -346,13 +347,12 @@ function bigHint() {
     gModes.bigHint = true
 }
 
-
 function reveal3x3(cell) {
     const row = +cell.dataset.i
     const col = +cell.dataset.j
     if (gBoard[row][col].isShown) return
     gGame.bigHint--
-    if(!gGame.bigHint) document.querySelector('.big-hint').classList.add('used')
+    if (!gGame.bigHint) document.querySelector('.big-hint').classList.add('used')
     console.log(row, col);
 
     const negs = []
@@ -385,11 +385,8 @@ function cornersHint(op) {
     if (gModes.bigHint) return
     gModes.twoCorners = true
     gGame.selectCorners--
-    if(!gGame.selectCorners) op.classList.add('used')
+    if (!gGame.selectCorners) op.classList.add('used')
 }
-
-
-
 
 function twoCorners(cell) {
     if (!gGame.lastCell) {
@@ -417,7 +414,7 @@ function twoCorners(cell) {
 
     const negs = []
     for (var i = startRow; i <= endRow; i++) {
-        for (var j = startCol; j <= endCol; j++){
+        for (var j = startCol; j <= endCol; j++) {
             if (!gBoard[i][j].isShown) {
                 negs.push(gBoard[i][j])
                 gBoard[i][j].isShown = true
@@ -439,9 +436,9 @@ function twoCorners(cell) {
     gModes.twoCorners = false
 }
 
-function refreshModes(){
+function refreshModes() {
     const modes = document.querySelectorAll('li')
-    for(var i = 0; i < modes.length ; i++){
+    for (var i = 0; i < modes.length; i++) {
         modes[i].classList.remove('used')
     }
     gGame.hint = 3
@@ -449,7 +446,7 @@ function refreshModes(){
     gGame.selectCorners = 3
 }
 
-function refreshGgame(){
+function refreshGgame() {
     const timer = document.querySelector('.game-info h3')
     clearInterval(gTimerInterval)
     timer.innerText = '00:00'
@@ -460,4 +457,43 @@ function refreshGgame(){
     gGame.shownCount = 0
     gGame.isLost = false
     gGame.markedCount = gLevel.MINES
+}
+
+function unableHints() {
+    const hints = document.querySelectorAll('.hint')
+    for (let i = 0; i < hints.length; i++) {
+        hints[i].classList.add('used')
+    }
+}
+
+function sevenBoom() {
+    restart()
+    gModes.sevenBoom = true
+    const cells = []
+    for (let i = 0; i < gBoard.length; i++) {
+        for (let j = 0; j < gBoard[0].length; j++) {
+            cells.push({ i, j })
+        }
+    }
+    for (let k = 0; k < cells.length; k++) {
+        if (!k) continue
+        if (k % 7 === 6 || (k + 4) % 10 === 0) {
+            gBoard[cells[k].i][cells[k].j].isMine = true
+        }
+    }
+    renderBoard(gBoard)
+    toggleMenu()
+}
+
+function usersBoard() {
+    restart()
+    toggleMenu()
+    gModes.usersBoard = true
+}
+
+function userMarks(cell) {
+    if (gModes.userMarks === gLevel.MINES) return
+       
+        cell.isMine = true
+    renderBoard(gBoard)
 }

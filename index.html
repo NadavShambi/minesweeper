@@ -13,15 +13,36 @@
       <div class="nav-hints">
         <div class="menu" onclick="toggleMenu(this)">Menu</div>
         <ul>
-          <li onclick="hint(this)" title="3 hints a game, not going to work on first click">1x1 hint</li>
-          <li onclick="bigHint()" title="3 hints a game, not going to work on first click" class="big-hint">3x3 hint</li>
-          <li onclick="cornersHint(this)" title="3 hints a game, not going to work on first click">two corners</li>
-          <li>7boom</li>
-          <li>createboard</li>
+          <li
+            style="--i: 0"
+            onclick="hint(this)"
+            title="3 hints a game, not going to work on first click"
+            class="hint"
+          >
+            1x1 hint
+          </li>
+          <li
+            style="--i: 1"
+            onclick="bigHint()"
+            title="3 hints a game, not going to work on first click"
+            class="big-hint hint"
+          >
+            3x3 hint
+          </li>
+          <li
+            style="--i: 2"
+            onclick="cornersHint(this)"
+            title="3 hints a game, not going to work on first click"
+            class="hint"
+
+          >
+            two corners
+          </li>
+          <li style="--i: 3" onclick="sevenBoom()">7boom</li>
+          <li style="--i: 4" onclick="usersBoard()">createboard</li>
         </ul>
       </div>
-      <div class="hint" onclick="hint()">
-      </div>
+      <div class="hint" onclick="hint()"></div>
       <h2 class="lev">Choose Your Level:</h2>
       <form action="get">
         <label>

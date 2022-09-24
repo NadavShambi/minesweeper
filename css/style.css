@@ -108,10 +108,13 @@ body {
     position: relative;
     border-top: 1px solid var(--pr-dark-cr);
     display: none;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: start;
     opacity: 0;
     overflow: hidden;
+}
+.nav-hints ul li span{
+    position: absolute;
+    right: 3px;
 }
 
 .nav-hints.active ul {
@@ -342,11 +345,9 @@ footer{
     height: 50px;
     background: var(--pr-light-cr);
     width: 100%;
-    text-align: center;
     display: grid;
     place-content: center;
     margin-top: auto;
-    
 }
 
 @keyframes safe {
@@ -391,8 +392,6 @@ footer{
         bottom: 28px;
     }
 
-
-
     .game-info {
         width: 445px;
     }
@@ -432,10 +431,14 @@ footer{
         width: 30px;
     }
 
-    .life,
-    .timer {
+    .life{
         font-size: 30px;
         height: 40px;
+
+    }
+    .timer {
+        font-size: 25px;
+        height: 30px;
     }
 
     .flags {
@@ -509,10 +512,14 @@ footer{
         width: 30px;
     }
 
-    .life,
-    .timer {
+    .life{
         font-size: 30px;
         height: 40px;
+
+    }
+    .timer {
+        font-size: 25px;
+        height: 30px;
     }
 
     .flags {

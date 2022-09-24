@@ -322,9 +322,11 @@ function toggleMenu() {
 function hint(op) {
     toggleMenu()
     const hint = document.querySelector('.hint')
+    const count = document.querySelector('.normal span')
     if (!gGame.hint || !gTimerInterval) return
     hint.style.animation = 'bulb 1s linear forwards'
     gGame.hint--
+    count.innerText = gGame.hint
     if (!gGame.hint) op.classList.add('used')
     const safeCells = []
     for (var i = 0; i < gBoard.length; i++) {
@@ -351,7 +353,9 @@ function reveal3x3(cell) {
     const col = +cell.dataset.j
     if (gBoard[row][col].isShown) return
     gGame.bigHint--
+    document.querySelector('.big-hint span').innerText = gGame.bigHint
     if (!gGame.bigHint) document.querySelector('.big-hint').classList.add('used')
+
 
     const negs = []
     for (var i = row - 1; i <= row + 1; i++) {
@@ -383,6 +387,7 @@ function cornersHint(op) {
     if (gModes.bigHint) return
     gModes.twoCorners = true
     gGame.selectCorners--
+    document.querySelector('.corners span').innerText = gGame.selectCorners
     if (!gGame.selectCorners) op.classList.add('used')
 }
 
@@ -430,9 +435,14 @@ function refreshModes() {
     for (var i = 0; i < modes.length; i++) {
         modes[i].classList.remove('used')
     }
+
     gGame.hint = 3
     gGame.bigHint = 3
     gGame.selectCorners = 3
+
+    document.querySelector('.normal span').innerText = gGame.hint
+    document.querySelector('.big-hint span').innerText = gGame.bigHint
+    document.querySelector('.corners span').innerText = gGame.selectCorners
 }
 
 function refreshGgame() {

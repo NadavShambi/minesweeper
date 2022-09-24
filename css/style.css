@@ -46,13 +46,6 @@ body {
     /* font-family: 'Changa One', cursive; */
 }
 
-.title span{
-position: absolute;
-text-shadow: none;
-scale: .3;
-left: 110px;
-top:-20px;
-}
 
 .nav-hints {
     position: absolute;
@@ -68,9 +61,7 @@ top:-20px;
 
 }
 
-.menu::before{
-    content: 'Menu';
-}
+
 .menu{
     position: absolute;
     top: -60px;
@@ -82,10 +73,7 @@ top:-20px;
     
 }
 
-.menu.active::before{
-    content: 'Close ';
-    color: #cc7575;
-}
+
 
 .menu.active{
     border-top-left-radius: 16px;
@@ -94,6 +82,8 @@ top:-20px;
     width: 150px;
     border-radius: none;
     text-decoration: none;
+    color: #cc7575;
+
 }
 
 .nav-hints ul{

@@ -44,16 +44,17 @@ body {
         5px 5px var(--pr-dark-cr);
     letter-spacing: .1em;
     position: relative;
-    font-family: 'Changa One', cursive;
+    font-family: 'Changa One','Fredoka One', cursive;
     animation: title 12s linear infinite;
-    font-weight:400 ;
+    font-weight: 400;
 }
 
 @keyframes title {
-    0%{
+    0% {
         filter: hue-rotate(0deg);
     }
-    100%{
+
+    100% {
         filter: hue-rotate(360deg);
     }
 }
@@ -277,11 +278,12 @@ label {
     place-items: center;
     transition: background 1s;
 }
-.cell:active{
+
+.cell:active {
     box-shadow: 0 0 0 .2px #000,
-    inset -5px -5px 0 3px #9992,
-    inset 2px 2px 0 2px #9992,
-    inset -1.5px -1.5px 3px #000;
+        inset -5px -5px 0 3px #9992,
+        inset 2px 2px 0 2px #9992,
+        inset -1.5px -1.5px 3px #000;
 }
 
 
@@ -362,8 +364,9 @@ label {
 
     .title h1 {
         text-shadow:
-        1px 3px #8fc7adfd,
-        4px 4px var(--pr-dark-cr);
+            1px 3px #8fc7adfd,
+            4px 4px var(--pr-dark-cr);
+
     }
 
     .menu {
@@ -439,8 +442,8 @@ label {
 
     .title h1 {
         text-shadow:
-        1px 3px #8fc7adfd,
-        4px 4px var(--pr-dark-cr);
+            1px 3px #8fc7adfd,
+            4px 4px var(--pr-dark-cr);
     }
 
     .menu {
@@ -451,8 +454,6 @@ label {
     .nav-hints ul {
         bottom: 28px;
     }
-
-
 
     .game-info {
         width: 445px;

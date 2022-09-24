@@ -361,6 +361,10 @@ label {
         left: 10px;
         z-index: 5;
     }
+    .choose-level form{
+        font-size: 25px;
+        align-items: flex-end;
+    }
 
     .cell {
         height: 30px;

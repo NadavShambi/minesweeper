@@ -44,7 +44,7 @@ body {
         5px 5px var(--pr-dark-cr);
     letter-spacing: .1em;
     position: relative;
-    font-family: 'Changa One','Fredoka One', cursive;
+    font-family: 'Changa One', cursive;
     animation: title 12s linear infinite;
     font-weight: 400;
 }
@@ -366,6 +366,7 @@ label {
         text-shadow:
             1px 3px #8fc7adfd,
             4px 4px var(--pr-dark-cr);
+            font-family: 'Fredoka One', cursive;
 
     }
 
@@ -444,6 +445,8 @@ label {
         text-shadow:
             1px 3px #8fc7adfd,
             4px 4px var(--pr-dark-cr);
+    font-family: 'Fredoka One', cursive;
+
     }
 
     .menu {

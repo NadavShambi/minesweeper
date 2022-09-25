@@ -42,7 +42,7 @@ function getEmptyCells(board) {
     for (var i = 0; i < board.length; i++) {
         for (var j = 1; j < board[0].length - 1; j++) {
             if (board[i][j] === EMPTY) {
-                var coord = { i: i, j: j }
+                var coord = { i, j }
                 emptyCells.push(coord)
             }
         }
@@ -53,8 +53,8 @@ function getEmptyCells(board) {
 
 function drawRandom(array) {
     var idx = getRandomInt(0, array.length)
-    var value = array.splice(idx,1)
-    var res = {array,value}
+    var value = array.splice(idx, 1)
+    var res = { array, value }
     return res
 }
 
@@ -78,7 +78,6 @@ function countNeg(board, rowIdx, colIdx) {
 }
 
 
-
 // function createBoard(rows, cols) {
 //     var board = []
 //     for (var i = 0; i < rows; i++) {
@@ -90,4 +89,28 @@ function countNeg(board, rowIdx, colIdx) {
 //     }
 //     return board
 // }
+
+
+function startTimer(cell) {
+    const timer = document.querySelector('.game-info h3')
+    if (gTimerInterval) return
+    refreshModes()
+    //// add mode condition here/ normal modeV
+    if (!gModes.sevenBoom && !gModes.userMarks) placeMines(gBoard, gLevel.MINES, cell)
+    setMinesNegsCount()
+    gTimerInterval = setInterval(() => {
+        ++gGame.secsPassed
+        var displayMins = Math.floor(gGame.secsPassed / 60)
+        var displaySecs = gGame.secsPassed % 60
+
+        if (displaySecs < 10) {
+            displaySecs = '0' + displaySecs
+        }
+        if (displayMins < 10) {
+            displayMins = '0' + displayMins
+        }
+
+        timer.innerText = `${displayMins}:${displaySecs}`
+    }, 1000)
+}
 

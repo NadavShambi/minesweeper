@@ -12,7 +12,10 @@
     --pr-light-cr: #eee;
     --pr-dark-cr: #252525;
     --glass: linear-gradient(45deg, #eee5, #eee);
+    --dark-glass: linear-gradient(34deg, #2225, #222);
     --container-width: 645px;
+
+    --darkmode-cr: #b3b3b3;
 }
 
 body {
@@ -73,6 +76,53 @@ body {
 
 }
 
+.toggle-dark-mode {
+    height: 20px;
+    width: 40px;
+    background: #669bff;
+    box-shadow: 0 0 0 1px #222;
+    position: absolute;
+    right: 7%;
+    top: 10%;
+    border-radius: 20px;
+}
+
+.toggle {
+    height: 18px;
+    width: 18px;
+    background: #222;
+    border-radius: 50%;
+    position: relative;
+    margin-left: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: 0.5s;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+.toggle .inner{
+    position: relative;
+    left: 3px;
+    height: 6px;
+    width: 6px;
+    background: transparent;
+    border-radius: 50%;
+    box-shadow: -3px 0 0 0 #eee ;
+    transform: rotate(-12deg);
+}
+
+.toggle.active {
+    background: skyblue;
+    margin-left: 20px;
+}
+
+.toggle.active .inner{
+    left: 0;
+    background: linear-gradient(45deg, rgb(255, 81, 0),orange);
+    box-shadow: 0 0 5px orange;
+}
+
 .menu {
     position: absolute;
     top: -60px;
@@ -84,6 +134,11 @@ body {
 
 }
 
+.menu.dark-mode{
+    color: var(--darkmode-cr);
+    text-decoration: underline 3px solid var(--darkmode-cr);
+    background: none;
+}
 
 .menu.active {
     border-top-left-radius: 16px;
@@ -92,9 +147,13 @@ body {
     width: 150px;
     border-radius: none;
     text-decoration: none;
-    color: #cc7575;
 
 }
+
+.menu.active.dark-mode{
+    background: #323332;
+    color: var(--darkmode-cr);
+} 
 
 .nav-hints ul {
     position: relative;
@@ -112,7 +171,8 @@ body {
     opacity: 0;
     overflow: hidden;
 }
-.nav-hints ul li span{
+
+.nav-hints ul li span {
     position: absolute;
     right: 3px;
 }
@@ -131,6 +191,11 @@ body {
 
 }
 
+.nav-hints.active ul.dark-mode{
+    background: #323332;
+    color: var(--darkmode-cr);
+}
+
 .nav-hints.active ul li {
     width: 100%;
     font-size: 20px;
@@ -138,11 +203,6 @@ body {
     display: flex;
     opacity: 1;
 
-}
-
-.used {
-    cursor: not-allowed;
-    background: #cc7575;
 }
 
 .choose-level {
@@ -153,7 +213,7 @@ body {
     background: var(--glass);
     width: var(--container-width);
     position: relative;
-    box-shadow: -5px 0 15px var(--pr-light-cr),
+    box-shadow: -5px 0 25px var(--pr-light-cr),
         15px 10px 20px #527279;
 }
 
@@ -168,12 +228,11 @@ body {
     align-items: center;
     justify-content: space-evenly;
     font-size: 35px;
-    overflow: hidden;
-
 }
 
-label {
+form label {
     cursor: pointer;
+    /* overflow: hidden; */
 }
 
 .choose-level label input {
@@ -184,19 +243,16 @@ label {
 }
 
 .choose-level label input:checked {
-    box-shadow: 0 0 80px 50px olive;
+    box-shadow: 0 0 30px 20px rgb(138, 228, 216);
 }
 
 .game-info {
-    height: 100px;
+    height: 80px;
     width: var(--container-width);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    background: var(--glass);
-    box-shadow: inset 0 0 13px var(--pr-dark-cr),
-        inset 0 0 200px #4f5e52,
-        15px 10px 25px #4f5e52;
+    background: var(--dark-glass);
     position: relative;
 }
 
@@ -276,7 +332,6 @@ label {
     cursor: pointer;
     font-size: 1em;
     user-select: none;
-    /* border-radius: 7px; */
     display: grid;
     place-items: center;
     transition: background 1s;
@@ -289,7 +344,6 @@ label {
         inset -1.5px -1.5px 3px #000;
 }
 
-
 .flipped {
     background: var(--glass);
     cursor: default;
@@ -299,8 +353,8 @@ label {
     position: absolute;
     height: 200px;
     width: 350px;
-    background: linear-gradient(45deg,
-            #808000e6, #b2b1b1);
+    background: linear-gradient(to left,#f0f8ffe6,#f08080ec,#ff7f50ea,#f08080f1,#f0f8fff1);
+    background-size: 400%;
     display: none;
     flex-direction: column;
     align-items: center;
@@ -310,7 +364,16 @@ label {
         inset -5px -5px 10px #222,
         10px 10px 15px #222;
     border-radius: 16px;
+    animation: bgSizing 12s linear infinite;
+}
 
+@keyframes bgSizing{
+    0%{
+        background-position: 0%;
+    }
+    100%{
+        background-position: 400%;
+    }
 }
 
 .greet {
@@ -340,7 +403,7 @@ label {
     background-color: #c01313;
 }
 
-footer{
+footer {
     border-top: 2px solid var(--pr-dark-cr);
     height: 50px;
     background: var(--pr-light-cr);
@@ -349,6 +412,21 @@ footer{
     place-content: center;
     margin-top: auto;
 }
+
+.dark-mode{
+    background: var(--dark-glass);
+    color: var(--darkmode-cr);
+}
+
+.light-mode{
+    background: var(--glass);
+}
+
+.used {
+    cursor: not-allowed;
+    background: #cc7575;
+}
+
 
 @keyframes safe {
 
@@ -379,7 +457,7 @@ footer{
         text-shadow:
             1px 3px #8fc7adfd,
             4px 4px var(--pr-dark-cr);
-            font-family: 'Fredoka One', cursive;
+        font-family: 'Fredoka One', cursive;
 
     }
 
@@ -431,11 +509,12 @@ footer{
         width: 30px;
     }
 
-    .life{
+    .life {
         font-size: 30px;
         height: 40px;
 
     }
+
     .timer {
         font-size: 25px;
         height: 30px;
@@ -460,7 +539,7 @@ footer{
         text-shadow:
             1px 3px #8fc7adfd,
             4px 4px var(--pr-dark-cr);
-    font-family: 'Fredoka One', cursive;
+        font-family: 'Fredoka One', cursive;
 
     }
 
@@ -512,11 +591,12 @@ footer{
         width: 30px;
     }
 
-    .life{
+    .life {
         font-size: 30px;
         height: 40px;
 
     }
+
     .timer {
         font-size: 25px;
         height: 30px;
@@ -526,4 +606,7 @@ footer{
         font-size: 20px;
     }
 }
+
+
+
 

@@ -6,8 +6,9 @@ const FLAG = '🚩'
 const HEART = '❤'
 const BROKEN_HEART = '💔'
 
-var gBoard
 var gTimerInterval
+
+var gBoard
 
 const gLevel = {
     SIZE: 12,
@@ -82,6 +83,7 @@ function renderBoard(board, selector = '.board') {
         strHTML += '</tr>'
     }
     strHTML += '</tbody></table>'
+
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML
     var flag = document.querySelector('.flags span')
@@ -508,3 +510,14 @@ function flipMines(){
         }
     }
 }
+
+/// dark mode
+
+function darkMode(){
+    document.querySelector('.toggle').classList.toggle('active')
+
+    document.querySelector('.choose-level').classList.toggle('dark-mode')
+    document.querySelector('.game-conainer').classList.toggle('dark-mode')
+    document.querySelector('.nav-hints.active ul').classList.toggle('dark-mode')
+}
+

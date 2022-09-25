@@ -10,6 +10,13 @@
   <body onload="initGame()">
     <div class="title"><h1>Minesweeper</h1></div>
     <div class="choose-level">
+      <div class="toggle-dark-mode">
+        <label for="toggle">
+          <div id="toggle" class="toggle" onclick="darkMode()">
+          <div class="inner">
+          </div></div>
+        </label>
+      </div>
       <div class="nav-hints">
         <div class="menu" onclick="toggleMenu(this)">Menu</div>
         <ul>
@@ -107,7 +114,7 @@
       <button onclick="restart()">Play Again!</button>
     </div>
     
-    <footer>Nadav Shambi &copy</footer>
+    <footer class="footer">Nadav Shambi &copy</footer>
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"

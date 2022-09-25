@@ -32,6 +32,7 @@ const gModes = {
     bigHint: false,
     twoCorners: false,
     sevenBoom: false,
+    sevenBoomMinesCount: 0,
     usersBoard: false,
     userMarks: 0
 }
@@ -271,12 +272,15 @@ function checkGameOver() {
 function checkVictory() {
     const endScreen = document.querySelector('.end-screen')
     const greet = document.querySelector('.greet')
+    const mines = gModes.sevenBoom ? gModes.sevenBoomMinesCount : gLevel.MINES
+
+
+
     if (!gGame.markedCount &&
-        gGame.shownCount === gLevel.SIZE ** 2 - gLevel.MINES + (gLevel.hearts - gGame.lives)) {
+        gGame.shownCount === gLevel.SIZE ** 2 - mines + (gLevel.hearts - gGame.lives) ) {
         clearInterval(gTimerInterval)
         greet.innerText = 'Victory!'
         endScreen.style.display = 'flex'
-
 
     }
 }
@@ -456,6 +460,8 @@ function refreshGgame() {
     gGame.shownCount = 0
     gGame.isLost = false
     gGame.markedCount = gLevel.MINES
+    gModes.sevenBoomMinesCount = 0
+
 }
 
 function unableHints() {
@@ -480,8 +486,9 @@ function sevenBoom() {
             }
         }
     }
-    console.log(minesCount);
     gGame.markedCount = minesCount
+    gModes.sevenBoomMinesCount = minesCount
+
     renderBoard(gBoard)
     toggleMenu()
 }

@@ -70,7 +70,7 @@ function renderBoard(board, selector = '.board') {
             const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : EMPTY
 
             ///// change last isMine to empty
-            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : isMine
+            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
             const flipped = cell.isShown ? 'flipped' : ''
             const isLost = gGame.isLost && cell.isMine ? 'lose' : ''
             const className = `cell cell-${i}-${j} ${flipped} ${isLost}`
@@ -523,5 +523,7 @@ function darkMode() {
     document.querySelector('.choose-level').classList.toggle('dark-mode')
     document.querySelector('.game-conainer').classList.toggle('dark-mode')
     // document.querySelector('.nav-hints.active ul').classList.toggle('dark-mode')
+
+    
 }
 

@@ -70,7 +70,7 @@ function renderBoard(board, selector = '.board') {
             const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : EMPTY
 
             ///// change last isMine to empty
-            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : EMPTY
+            const content = cell.isShown ? isMine : (cell.isMarked) ? FLAG : isMine
             const flipped = cell.isShown ? 'flipped' : ''
             const isLost = gGame.isLost && cell.isMine ? 'lose' : ''
             const className = `cell cell-${i}-${j} ${flipped} ${isLost}`
@@ -131,7 +131,7 @@ function cellClicked(cell) {
 
     if (gModes.usersBoard) {
         userMarks(curCell)
-        
+
         return
     }
     gGame.isOn = true
@@ -216,7 +216,7 @@ function restart() {
     endScreen.style.display = 'none'
     hearts.innerText = HEART.repeat(gLevel.hearts)
     gModes.sevenBoom = false
-    gModes.usersBoard = false 
+    gModes.usersBoard = false
     gModes.userMarks = 0
     refreshGgame()
     initGame()
@@ -316,9 +316,7 @@ function toggleMenu() {
     const menu = nav.querySelector('.menu')
     nav.classList.toggle('active')
     menu.classList.toggle('active')
-    if (!gTimerInterval) {
 
-    }
 }
 
 function hint(op) {
@@ -401,7 +399,7 @@ function twoCorners(cell) {
     }
     const lastCellCoord = { i: gGame.lastCell.dataset.i, j: gGame.lastCell.dataset.j }
     const curCellCoord = { i: cell.dataset.i, j: cell.dataset.j }
- 
+
     const startRow = (lastCellCoord.i > curCellCoord.i) ? curCellCoord.i : lastCellCoord.i
     const endRow = (lastCellCoord.i > curCellCoord.i) ? lastCellCoord.i : curCellCoord.i
 
@@ -471,14 +469,20 @@ function sevenBoom() {
     restart()
     gModes.sevenBoom = true
     var k = 0
+    var minesCount = 0
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
             k++
-            if (k % 7 === 0 || (k + 3) % 10 === 0) {
+            const kStr = k + ''
+            if (k % 7 === 0 || (k + 3) % 10 === 0 || +kStr.slice(0, 1) === 7) {
                 gBoard[i][j].isMine = true
+                minesCount++
             }
         }
     }
+    console.log(minesCount);
+    gLevel.MINES = minesCount
+    gGame.markedCount = minesCount
     renderBoard(gBoard)
     toggleMenu()
 }
@@ -490,18 +494,18 @@ function usersBoard() {
 }
 
 function userMarks(cell) {
-    if(cell.isMine)return
+    if (cell.isMine) return
     gModes.userMarks++
     cell.isMine = true
     cell.isShown = true
-    if (gModes.userMarks === +gLevel.MINES){
+    if (gModes.userMarks === +gLevel.MINES) {
         gModes.usersBoard = false
         flipMines()
-    } 
+    }
     renderBoard(gBoard)
 }
 
-function flipMines(){
+function flipMines() {
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
             if (gBoard[i][j].isMine) {
@@ -513,11 +517,11 @@ function flipMines(){
 
 /// dark mode
 
-function darkMode(){
+function darkMode() {
     document.querySelector('.toggle').classList.toggle('active')
 
     document.querySelector('.choose-level').classList.toggle('dark-mode')
     document.querySelector('.game-conainer').classList.toggle('dark-mode')
-    document.querySelector('.nav-hints.active ul').classList.toggle('dark-mode')
+    // document.querySelector('.nav-hints.active ul').classList.toggle('dark-mode')
 }
 

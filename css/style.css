@@ -101,6 +101,7 @@ body {
     display: grid;
     place-items: center;
 }
+
 .toggle .inner{
     position: relative;
     left: 3px;
@@ -134,11 +135,6 @@ body {
 
 }
 
-.menu.dark-mode{
-    color: var(--darkmode-cr);
-    text-decoration: underline 3px solid var(--darkmode-cr);
-    background: none;
-}
 
 .menu.active {
     border-top-left-radius: 16px;
@@ -166,7 +162,7 @@ body {
 .nav-hints ul li {
     position: relative;
     border-top: 1px solid var(--pr-dark-cr);
-    display: none;
+    display: flex;
     justify-content: start;
     opacity: 0;
     overflow: hidden;
@@ -200,8 +196,8 @@ body {
     width: 100%;
     font-size: 20px;
     left: 0;
-    display: flex;
     opacity: 1;
+    display: flex;
 
 }
 

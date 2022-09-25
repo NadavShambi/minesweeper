@@ -481,7 +481,6 @@ function sevenBoom() {
         }
     }
     console.log(minesCount);
-    gLevel.MINES = minesCount
     gGame.markedCount = minesCount
     renderBoard(gBoard)
     toggleMenu()

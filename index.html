@@ -1,126 +1,97 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body onload="initGame()">
-    <div class="title"><h1>Minesweeper</h1></div>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body onload="initGame()">
+    <div class="title">
+        <h1>Minesweeper</h1>
+    </div>
     <div class="choose-level">
-      <div class="toggle-dark-mode">
-        <label for="toggle">
-          <div id="toggle" class="toggle" onclick="darkMode()">
-          <div class="inner">
-          </div></div>
-        </label>
-      </div>
-      <div class="nav-hints">
-        <div class="menu" onclick="toggleMenu(this)">Menu</div>
-        <ul>
-          <li
-            onclick="hint(this)"
-            title="3 hints a game, 1 safe spot will glow on the board. Available after the game starts."
-            class="hint normal"
-          >
-            Hint <span>3</span>
-          </li>
-          <li
-            onclick="bigHint()"
-            title="3 hints a game, click on board to check for mines in a 3x3 area. Available after the game starts."
-            class="big-hint hint"
-          >
-            Mega Hint <span>3</span>
-          </li>
-          <li
-            onclick="cornersHint(this)"
-            title="3 hints a game, pick two cells to check the area between them for mines. Available after the game starts."
-            class="hint corners"
-          >
-            Two Corners <span>3</span>
-          </li>
-          <li
-            onclick="sevenBoom()"
-            title="Place mines in every 7th cell or a cell that ends with 7."
-          >
-            7boom
-          </li>
-          <li
-           
-            onclick="usersBoard()"
-            title="Challenge your friends! Create a costume made board by placing each mine(mines count according to currnt level) manually."
-          >
-            createboard
-          </li>
-        </ul>
-      </div>
-      <h2 class="lev">Choose Your Level:</h2>
-      <form action="get">
-        <label title="4x4 Board, 2 Mines, 1 Life and 9 Hints ">
-          <input
-            type="radio"
-            name="mode"
-            onclick="onMode(this)"
-            data-r="4"
-            data-m="2"
-            data-h="1"
-          />
-          Easy
-        </label>
-        <label title="8x8 Board, 14 Mines, 2 Life and 9 Hints ">
-          <input
-            type="radio"
-            name="mode"
-            onclick="onMode(this)"
-            data-r="8"
-            data-m="14"
-            data-h="2"
-          />
-          Hard
-        </label>
-        <label title="12x12 Board, 32 Mines, 3 Life and 9 Hints ">
-          <input
-            checked
-            type="radio"
-            name="mode"
-            onclick="onMode(this)"
-            data-r="12"
-            data-m="32"
-            data-h="3"
-          />
-          Expert
-        </label>
-      </form>
+        <div class="toggle-dark-mode">
+            <label for="toggle">
+                <div id="toggle" class="toggle" onclick="darkMode()">
+                    <div class="inner">
+                        <span style="--j:0">!</span>
+                        <span style="--j:1">!</span>
+                        <span style="--j:2">!</span>
+                        <span style="--j:3">!</span>
+                        <span style="--j:4">!</span>
+                        <span style="--j:5">!</span>
+                        <span style="--j:6">!</span>
+                        <span style="--j:7">!</span>
+                        <span style="--j:8">!</span>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="nav-hints">
+            <div class="menu" onclick="toggleMenu(this)">Menu</div>
+            <ul>
+                <li onclick="hint(this)"
+                    title="3 hints a game, 1 safe spot will glow on the board. Available after the game starts."
+                    class="hint normal used">
+                    Hint <span>3</span>
+                </li>
+                <li onclick="bigHint()"
+                    title="3 hints a game, click on board to check for mines in a 3x3 area. Available after the game starts."
+                    class="big-hint hint used">
+                    Mega Hint <span>3</span>
+                </li>
+                <li onclick="cornersHint(this)"
+                    title="3 hints a game, pick two cells to check the area between them for mines. Available after the game starts."
+                    class="hint corners used">
+                    Two Corners <span>3</span>
+                </li>
+                <li onclick="sevenBoom()" title="Place mines in every 7th cell or a cell that ends with 7.">
+                    7boom
+                </li>
+                <li onclick="usersBoard()"
+                    title="Challenge your friends! Create a costume made board by placing each mine(mines count according to currnt level) manually.">
+                    createboard
+                </li>
+            </ul>
+        </div>
+        <h2 class="lev">Choose Level:</h2>
+        <form action="get">
+            <label title="4x4 Board, 2 Mines, 1 Life and 9 Hints ">
+                <input type="radio" name="mode" onclick="onMode(this)" data-r="4" data-m="2" data-h="1">
+                Easy
+            </label>
+            <label title="8x8 Board, 14 Mines, 2 Life and 9 Hints ">
+                <input type="radio" name="mode" onclick="onMode(this)" data-r="8" data-m="14" data-h="2">
+                Hard
+            </label>
+            <label title="12x12 Board, 32 Mines, 3 Life and 9 Hints ">
+                <input checked="" type="radio" name="mode" onclick="onMode(this)" data-r="12" data-m="32" data-h="3">
+                Expert
+            </label>
+        </form>
     </div>
     <div class="game-info">
-      <h2 class="life" title="Use them wisely.">❤❤❤</h2>
-      <h2
-        class="flags"
-        title="Mark the loctions of possible mines with Right-Click."
-      >
-        🚩:<span>X</span>
-      </h2>
-      <h3 class="timer">00:00</h3>
+        <h2 class="life" title="Use them wisely.">❤❤❤</h2>
+        <h2 class="flags" title="Mark the loctions of possible mines with Right-Click.">
+            🚩:<span>32</span>
+        </h2>
+        <h3 class="timer">00:00</h3>
     </div>
     <div class="game-conainer">
-      <table class="board">
-        <table></table>
-      </table>
+        <table class="board">
+        </table>
     </div>
-    <div class="end-screen">
-      <h2 class="greet">Solid effort</h2>
-      <button onclick="restart()">Play Again!</button>
+    <div class="end-screen"">
+        <h2 class="greet">Solid effort</h2>
+        <h3 class="cur-level">Best Expert Score: not set</h3>
+        <button onclick="restart()">Play Again!</button>
     </div>
-    <footer class="footer">Nadav Shambi &copy</footer>
-    
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
+    <footer class="footer">Nadav Shambi ©</footer>
     <script src="js/utils.js"></script>
     <script src="js/game.js"></script>
-  </body>
-</html>
+</body>
 
+</html>

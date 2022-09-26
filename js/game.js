@@ -183,8 +183,6 @@ function onMode(mode) {
     gGame.markedCount = mode.dataset.m
     gLevel.hearts = mode.dataset.h
     hearts.innerText = HEART.repeat(gLevel.hearts)
-
-
     restart()
 }
 
@@ -260,6 +258,7 @@ function checkGameOver() {
         clearInterval(gTimerInterval)
         greet.innerText = 'Solid effort'
         endScreen.style.display = 'flex'
+        setEndLine(false)
         revealMines(gBoard)
         hearts.innerText = BROKEN_HEART
         gGame.isOn = false
@@ -277,13 +276,42 @@ function checkVictory() {
 
 
     if (!gGame.markedCount &&
-        gGame.shownCount === gLevel.SIZE ** 2 - mines + (gLevel.hearts - gGame.lives) ) {
+        gGame.shownCount === gLevel.SIZE ** 2 - mines + (gLevel.hearts - gGame.lives)) {
         clearInterval(gTimerInterval)
+
+        setEndLine(true)
         greet.innerText = 'Victory!'
         endScreen.style.display = 'flex'
-
     }
 }
+
+function setEndLine(bool) {
+    const elCurLevel = document.querySelector('.cur-level')
+    var level
+    var time = null
+    switch (gLevel.SIZE) {
+        case '4':
+            level = 'Easy'
+            break
+        case '8':
+            level = 'Hard'
+            break
+        case '12':
+        default:
+            level = 'Expert'
+            break
+    }
+    if (gModes.sevenBoom) level += ' 7Boom'
+    if (gModes.userMarks) level += ' Costume'
+    if (bool && (!localStorage.getItem(level) || localStorage.getItem(level) > gGame.secsPassed)) {
+        localStorage.setItem(level, gGame.secsPassed)
+    }
+    time = localStorage.getItem(level) + '/s'
+    if (!localStorage.getItem(level)) time = 'not set'
+    elCurLevel.innerText = `Best ${level} Score: ${time}`
+}
+
+
 
 function revealMines(board) {
     for (var i = 0; i < board.length; i++) {
@@ -461,7 +489,6 @@ function refreshGgame() {
     gGame.isLost = false
     gGame.markedCount = gLevel.MINES
     gModes.sevenBoomMinesCount = 0
-
 }
 
 function unableHints() {
@@ -525,11 +552,15 @@ function flipMines() {
 
 function darkMode() {
     document.querySelector('.toggle').classList.toggle('active')
+    document.querySelector('body').classList.toggle('dark')
 
     document.querySelector('.choose-level').classList.toggle('dark-mode')
+    document.querySelector('.title').classList.toggle('dark')
+    document.querySelector('.game-info').classList.toggle('dark')
     document.querySelector('.game-conainer').classList.toggle('dark-mode')
+    document.querySelector('.menu').classList.toggle('dark-mode')
     // document.querySelector('.nav-hints.active ul').classList.toggle('dark-mode')
 
-    
+
 }
 

@@ -3,7 +3,6 @@
 * {
     padding: 0;
     margin: 0;
-    /* box-sizing: border-box; */
     font-family: 'Fredoka One', cursive;
     user-select: none;
 }
@@ -14,7 +13,6 @@
     --glass: linear-gradient(45deg, #eee5, #eee);
     --dark-glass: linear-gradient(34deg, #2229, #222);
     --container-width: 645px;
-
     --darkmode-cr: #b3b3b3;
 }
 
@@ -25,8 +23,12 @@ body {
     justify-content: center;
     align-items: center;
     background: linear-gradient(315deg, rgb(170, 185, 199), rgba(81, 104, 128, 0.6));
-    background-color: olive;
+    background-color: azure;
     background-repeat: no-repeat;
+}
+
+body.dark{
+    background-color: #323332;
 }
 
 .title {
@@ -38,6 +40,11 @@ body {
     border-top-left-radius: 25% 50%;
     border-top-right-radius: 25% 50%;
     border-top: 8px groove #8f9e8f;
+}
+
+.title.dark{
+    background: #efefeff1;
+    border-top: groove 8px rgba(50, 51, 50, 0.5);
 }
 
 .title h1 {
@@ -56,7 +63,6 @@ body {
     0% {
         filter: hue-rotate(0deg);
     }
-
     100% {
         filter: hue-rotate(360deg);
     }
@@ -73,7 +79,6 @@ body {
     flex-direction: column;
     justify-content: space-evenly;
     transition: 0.5s;
-
 }
 
 .toggle-dark-mode {
@@ -114,15 +119,42 @@ body {
 }
 
 .toggle.active {
-    background: skyblue;
+    background: transparent;
     margin-left: 20px;
 }
 
 .toggle.active .inner{
     left: 0;
-    background: linear-gradient(45deg, rgb(255, 81, 0),orange);
-    box-shadow: 0 0 10px 2px orange;
+    background: linear-gradient(45deg, yellow,orange);
+    box-shadow: 0 0 10px 5px orange;
+    transform: rotate(0deg);
+    display: grid;
+    place-items: center;
 }
+
+.toggle .inner span{
+    display: none;
+}
+
+.toggle.active .inner span{
+display: inline;
+position: absolute;
+top: -50%;
+left: 60%;
+font-size: 6px;
+transform-origin: 0 10px;
+transform: translate(-50%,-50%) rotate(calc(var(--j) * 40deg));
+color: yellow;
+animation: lit 2s infinite linear;
+animation-delay: calc(var(--j)* 110ms);
+}
+
+@keyframes lit{
+    100%{
+        color: azure;
+    }
+}
+
 
 .menu {
     position: absolute;
@@ -132,9 +164,7 @@ body {
     color: var(--pr-dark-cr);
     text-decoration: underline 3px solid var(--pr-dark-cr);
     transition: 0.5s;
-
 }
-
 
 .menu.active {
     border-top-left-radius: 16px;
@@ -143,7 +173,6 @@ body {
     width: 150px;
     border-radius: none;
     text-decoration: none;
-
 }
 
 .menu.active.dark-mode{
@@ -184,7 +213,6 @@ body {
     transform: translateX(0px);
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
-
 }
 
 .nav-hints.active ul.dark-mode{
@@ -198,7 +226,6 @@ body {
     left: 0;
     opacity: 1;
     display: flex;
-
 }
 
 .choose-level {
@@ -228,18 +255,25 @@ body {
 
 form label {
     cursor: pointer;
-    /* overflow: hidden; */
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    width: 100px;
 }
 
 .choose-level label input {
     position: relative;
-    left: 50px;
     -webkit-appearance: none;
-    width: 0;
+    top: 20px;
 }
 
 .choose-level label input:checked {
-    box-shadow: 0 0 30px 20px rgb(138, 228, 216);
+    box-shadow: 
+    0 0 40px 20px steelblue;
+}
+.choose-level.dark-mode label input:checked {
+    box-shadow: 
+    0 0 40px 20px #8ae4d8;
 }
 
 .game-info {
@@ -250,6 +284,10 @@ form label {
     justify-content: space-evenly;
     background: var(--dark-glass);
     position: relative;
+}
+
+.game-info.dark{
+    background: linear-gradient(45deg,#9995,#eee);
 }
 
 .life {
@@ -301,7 +339,6 @@ form label {
     border-bottom-right-radius: 30px;
     box-shadow: -3px 0 15px var(--pr-light-cr),
         15px 10px 15px #527279;
-
 }
 
 .board {
@@ -355,7 +392,7 @@ form label {
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     box-shadow: 0 0 0 5px #222,
         inset 5px 5px 15px #eee,
         inset -5px -5px 10px #222,
@@ -380,9 +417,12 @@ form label {
         10px 10px var(--pr-dark-cr);
 }
 
+.cur-level{
+    letter-spacing: 0.05em;
+}
+
 .end-screen button {
     font-size: 20px;
-    margin-top: 30px;
     padding: 12px;
     cursor: pointer;
     border: none;
@@ -424,6 +464,11 @@ footer {
     background: #cc7575;
 }
 
+.menu.dark-mode{
+    text-decoration: underline 3px solid var(--darkmode-cr);
+    color: var(--darkmode-cr);
+    background: none;
+}
 
 @keyframes safe {
 
@@ -603,7 +648,4 @@ footer {
         font-size: 20px;
     }
 }
-
-
-
 

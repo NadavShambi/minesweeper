@@ -6,9 +6,10 @@ const FLAG = '🚩'
 const HEART = '❤'
 const BROKEN_HEART = '💔'
 
-var gTimerInterval
-
 var gBoard
+var gTimerInterval
+var gHistory = []
+var gSave = true
 
 const gLevel = {
     SIZE: 12,
@@ -29,7 +30,7 @@ const gGame = {
 }
 
 const gModes = {
-    bigHint: false,
+    hugeHint: false,
     twoCorners: false,
     sevenBoom: false,
     sevenBoomMinesCount: 0,
@@ -85,10 +86,13 @@ function renderBoard(board, selector = '.board') {
     }
     strHTML += '</tbody></table>'
 
+    saveHistory(gSave)
+    gSave = true
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML
-    var flag = document.querySelector('.flags span')
+    const flag = document.querySelector('.flags span')
     flag.innerText = gGame.markedCount
+
 }
 
 function placeMines(board, num, cell) {
@@ -119,9 +123,9 @@ function cellClicked(cell) {
 
     if (!gGame.isOn) return
 
-    if (gModes.bigHint) {
+    if (gModes.hugeHint) {
         reveal3x3(cell)
-        gModes.bigHint = false
+        gModes.hugeHint = false
         return
     }
 
@@ -155,7 +159,7 @@ function cellClicked(cell) {
 }
 
 function cellRightClicked(cell) {
-    if (!gGame.isOn || gModes.bigHint || gModes.twoCorners || gModes.usersBoard) return
+    if (!gGame.isOn || gModes.hugeHint || gModes.twoCorners || gModes.usersBoard) return
     const curCell = gBoard[cell.dataset.i][cell.dataset.j]
     startTimer(curCell)
 
@@ -217,6 +221,7 @@ function restart() {
     gModes.sevenBoom = false
     gModes.usersBoard = false
     gModes.userMarks = 0
+    gHistory = []
     refreshGgame()
     initGame()
 }
@@ -265,7 +270,6 @@ function checkGameOver() {
         gGame.isLost = true
 
     }
-    renderBoard(gBoard)
 }
 
 function checkVictory() {
@@ -377,7 +381,7 @@ function bigHint() {
     if (!gTimerInterval) return
     if (!gGame.bigHint) return
     if (gModes.twoCorners) return
-    gModes.bigHint = true
+    gModes.hugeHint = true
 }
 
 function reveal3x3(cell) {
@@ -416,7 +420,7 @@ function cornersHint(op) {
     toggleMenu()
     if (!gTimerInterval) return
     if (!gGame.selectCorners) return
-    if (gModes.bigHint) return
+    if (gModes.hugeHint) return
     gModes.twoCorners = true
     gGame.selectCorners--
     document.querySelector('.corners span').innerText = gGame.selectCorners
@@ -561,6 +565,60 @@ function darkMode() {
     document.querySelector('.menu').classList.toggle('dark-mode')
     // document.querySelector('.nav-hints.active ul').classList.toggle('dark-mode')
 
-
 }
 
+///undo
+///TODO: save history and clear history on restart
+///TODO: check for in loops 
+
+
+function saveHistory(bool) {
+    if (!bool) return
+
+    gHistory.push({
+        board: copyBoard(),
+        game: structuredClone(gGame),
+        modes: structuredClone(gModes)
+    })
+}
+
+function copyBoard() {
+    var board = []
+    for (let i = 0; i < gBoard.length; i++) {
+        board[i] = []
+        for (let j = 0; j < gBoard[0].length; j++) {
+            board[i][j] = structuredClone(gBoard[i][j])
+        }
+    }
+    return board
+}
+
+function undo() {
+    const curState = gHistory.length > 1 ? gHistory.slice(gHistory.length - 2, gHistory.length - 1) : null
+    gHistory.pop()
+    if (gHistory.length === 1) {
+        restart()
+        return
+    }
+    for (let key in curState[0]) {
+        if (key === 'board') {
+            gBoard = curState[0].board
+            continue
+        }
+        for (let innerKey in curState[0][key]) {
+            const isExistGame = Object.keys(gGame).some(key => key === innerKey)
+            const isExistModes = Object.keys(gModes).some(key => key === innerKey)
+            if (isExistGame) {
+                if (innerKey === 'secsPassed') continue
+                gGame[innerKey] = curState[0][key][innerKey]
+                continue
+            }
+            if (isExistModes) {
+                gModes[innerKey] = curState[0][key][innerKey]
+            }
+        }
+    }
+    gSave = false
+    document.querySelector('.life').innerText = HEART.repeat(gGame.lives)
+    renderBoard(gBoard)
+}

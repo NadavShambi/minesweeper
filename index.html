@@ -30,6 +30,7 @@
                 </div>
             </label>
         </div>
+        <div class="undo" onclick="undo()"><ion-icon name="arrow-undo-sharp"></ion-icon></div>
         <div class="nav-hints">
             <div class="menu" onclick="toggleMenu(this)">Menu</div>
             <ul>
@@ -84,7 +85,7 @@
         <table class="board">
         </table>
     </div>
-    <div class="end-screen"">
+    <div class="end-screen">
         <h2 class="greet">Solid effort</h2>
         <h3 class="cur-level">Best Expert Score: not set</h3>
         <button onclick="restart()">Play Again!</button>
@@ -92,6 +93,9 @@
     <footer class="footer">Nadav Shambi ©</footer>
     <script src="js/utils.js"></script>
     <script src="js/game.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
+

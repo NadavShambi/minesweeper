@@ -176,7 +176,6 @@ function cellRightClicked(cell) {
         gGame.markedCount -= 1
     }
     checkVictory()
-    gSave = true
     renderBoard(gBoard)
 }
 
@@ -620,7 +619,6 @@ function undo() {
             }
         }
     }
-    console.log(curState);
     document.querySelector('.life').innerText = HEART.repeat(gGame.lives)
     document.querySelector('.normal span').innerText = gGame.hint
     document.querySelector('.big-hint span').innerText = gGame.bigHint

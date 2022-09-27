@@ -53,8 +53,8 @@ body.dark {
 .title h1 {
     color: #669222;
     text-shadow:
-        2px 5px var(--pr-light-cr),
-        5px 5px var(--pr-dark-cr);
+    2px 5px var(--pr-light-cr),
+    5px 5px var(--pr-dark-cr);
     letter-spacing: .1em;
     position: relative;
     font-family: 'Changa One', cursive;
@@ -548,7 +548,7 @@ body.dark .cell.flipped {
     }
 }
 
-@media screen and (max-height: 1000px) {
+@media screen and (max-width: 650px){
 
     .title {
         width: 445px;
@@ -631,7 +631,7 @@ body.dark .cell.flipped {
     }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-height: 1000px){
 
     .title {
         width: 445px;
@@ -713,5 +713,4 @@ body.dark .cell.flipped {
         font-size: 20px;
     }
 }
-
 

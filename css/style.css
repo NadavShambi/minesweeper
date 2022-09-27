@@ -176,11 +176,14 @@ body.dark {
 .undo ion-icon {
     font-size: 30px;
     transform: rotateY(180deg);
+    color: var(--pr-dark-cr);
+    transition: color .5s;
 }
 
 body.dark .undo ion-icon {
     border-radius: 4px;
     box-shadow: inset 0 0 3px var(--pr-light-cr);
+    color: var(--pr-light-cr);
 }
 body.dark  .undo:active{
     box-shadow: inset 0 0 6px var(--pr-light-cr);
@@ -682,3 +685,4 @@ footer {
         font-size: 20px;
     }
 }
+

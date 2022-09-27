@@ -505,6 +505,29 @@ footer {
     background: none;
 }
 
+
+body.dark .cell{
+    box-shadow: 0 0 0 1px #eee,
+        inset -5px -5px 0 3px #ddd8,
+        inset 2px 2px 0 2px #ddd8,
+        inset -2.5px -2.5px 3px #333;
+        background: linear-gradient(315deg, #aeaeae 5%, #ddd 60%);
+    
+}
+
+body.dark .cell:active{
+    box-shadow: 0 0 0 1px #eee,
+        inset -5px -5px 0 3px #ddd8,
+        inset 2px 2px 0 2px #ddd8,
+        inset -1.5px -1.5px 3px #333;
+}
+
+body.dark .cell.flipped{
+    background: linear-gradient(45deg,#ddd,#cbd8f3f1);
+    border: none;
+    box-shadow: 0 0 0 1px #eee;
+}
+
 @keyframes safe {
 
     0%,

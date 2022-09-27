@@ -86,8 +86,7 @@ function renderBoard(board, selector = '.board') {
     }
     strHTML += '</tbody></table>'
 
-    // saveHistory(gSave)
-    // gSave = true
+    saveHistory(gSave)
     const elContainer = document.querySelector(selector)
     elContainer.innerHTML = strHTML
     const flag = document.querySelector('.flags span')
@@ -155,6 +154,7 @@ function cellClicked(cell) {
     cell.classList.add('flipped')
     gGame.shownCount++
     checkVictory()
+    gSave = true
     renderBoard(gBoard)
 }
 
@@ -175,6 +175,7 @@ function cellRightClicked(cell) {
         gGame.markedCount -= 1
     }
     checkVictory()
+    gSave = true
     renderBoard(gBoard)
 }
 
@@ -261,6 +262,7 @@ function checkGameOver() {
     hearts.innerText = HEART.repeat(gGame.lives)
     if (!gGame.lives) {
         clearInterval(gTimerInterval)
+        gTimerInterval = null
         greet.innerText = 'Solid effort'
         endScreen.style.display = 'flex'
         setEndLine(false)
@@ -282,7 +284,7 @@ function checkVictory() {
     if (!gGame.markedCount &&
         gGame.shownCount === gLevel.SIZE ** 2 - mines + (gLevel.hearts - gGame.lives)) {
         clearInterval(gTimerInterval)
-
+        gGame.isOn = false
         setEndLine(true)
         greet.innerText = 'Victory!'
         endScreen.style.display = 'flex'
@@ -404,15 +406,15 @@ function reveal3x3(cell) {
             }
         }
     }
-    gSave = false
+    // gSave = false
     renderBoard(gBoard)
-    
+
     setTimeout(() => {
         for (var i = 0; i < negs.length; i++) {
             negs[i].isShown = false
-            
+
         }
-        gSave = false
+        // gSave = false
         renderBoard(gBoard)
     }, 1000);
 
@@ -453,6 +455,7 @@ function twoCorners(cell) {
             }
         }
     }
+    gSave = false
     renderBoard(gBoard)
 
     setTimeout(() => {
@@ -460,6 +463,7 @@ function twoCorners(cell) {
             revealed[i].isShown = false
 
         }
+        gSave = false
         renderBoard(gBoard)
     }, 1500);
 
@@ -521,7 +525,6 @@ function sevenBoom() {
     gGame.markedCount = minesCount
     gModes.sevenBoomMinesCount = minesCount
 
-    renderBoard(gBoard)
     toggleMenu()
 }
 
@@ -568,59 +571,58 @@ function darkMode() {
 
 }
 
+function saveHistory(bool) {
+    if (!bool) return
 
+    gHistory.push({
+        board: copyBoard(),
+        game: structuredClone(gGame),
+        modes: structuredClone(gModes)
+    })
+}
 
+function copyBoard() {
+    var board = []
+    for (let i = 0; i < gBoard.length; i++) {
+        board[i] = []
+        for (let j = 0; j < gBoard[0].length; j++) {
+            board[i][j] = structuredClone(gBoard[i][j])
+        }
+    }
+    return board
+}
 
-// function saveHistory(bool) {
-//     if (!bool) return
-
-//     gHistory.push({
-//         board: copyBoard(),
-//         game: structuredClone(gGame),
-//         modes: structuredClone(gModes)
-//     })
-// }
-
-// function copyBoard() {
-//     var board = []
-//     for (let i = 0; i < gBoard.length; i++) {
-//         board[i] = []
-//         for (let j = 0; j < gBoard[0].length; j++) {
-//             board[i][j] = structuredClone(gBoard[i][j])
-//         }
-//     }
-//     return board
-// }
-
-
-
-// //TODO:: fix with modes
-// function undo() {
-//     const curState = gHistory.length > 1 ? gHistory.slice(gHistory.length - 2, gHistory.length - 1) : null
-//     gHistory.pop()
-//     if (gHistory.length <= 1) {
-//         restart()
-//         return
-//     }
-//     for (let key in curState[0]) {
-//         if (key === 'board') {
-//             gBoard = curState[0].board
-//             continue
-//         }
-//         for (let innerKey in curState[0][key]) {
-//             const isExistGame = Object.keys(gGame).some(key => key === innerKey)
-//             const isExistModes = Object.keys(gModes).some(key => key === innerKey)
-//             if (isExistGame) {
-//                 if (innerKey === 'secsPassed') continue
-//                 gGame[innerKey] = curState[0][key][innerKey]
-//                 continue
-//             }
-//             if (isExistModes) {
-//                 gModes[innerKey] = curState[0][key][innerKey]
-//             }
-//         }
-//     }
-//     gSave = false
-//     document.querySelector('.life').innerText = HEART.repeat(gGame.lives)
-//     renderBoard(gBoard)
-// }
+//TODO:: fix with modes
+function undo() {
+    const curState = gHistory.length > 1 ? gHistory.slice(gHistory.length - 2, gHistory.length - 1) : null
+    gHistory.pop()
+    if (!gGame.isOn) return
+    if (gHistory.length <= 1) {
+        restart()
+        return
+    }
+    for (let key in curState[0]) {
+        if (key === 'board') {
+            gBoard = curState[0].board
+            continue
+        }
+        for (let innerKey in curState[0][key]) {
+            const isExistGame = Object.keys(gGame).some(key => key === innerKey)
+            const isExistModes = Object.keys(gModes).some(key => key === innerKey)
+            if (isExistGame) {
+                if (innerKey === 'secsPassed') continue
+                gGame[innerKey] = curState[0][key][innerKey]
+                continue
+            }
+            if (isExistModes) {
+                gModes[innerKey] = curState[0][key][innerKey]
+            }
+        }
+    }
+    gSave = false
+    document.querySelector('.life').innerText = HEART.repeat(gGame.lives)
+    renderBoard(gBoard)
+    document.querySelector('.normal span').innerText = gGame.hint
+    document.querySelector('.big-hint span').innerText = gGame.bigHint
+    document.querySelector('.corners span').innerText = gGame.selectCorners
+}

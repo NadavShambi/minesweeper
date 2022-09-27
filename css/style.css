@@ -5,6 +5,7 @@
     margin: 0;
     font-family: 'Fredoka One', cursive;
     user-select: none;
+    transition: background 1s;
 }
 
 :root {
@@ -33,13 +34,15 @@ body.dark {
 
 .title {
     height: 90px;
-    background: #27292759;
+    background: #323332;
     width: var(--container-width);
     text-align: center;
     font-size: 34px;
     border-top-left-radius: 25% 50%;
     border-top-right-radius: 25% 50%;
     border-top: 8px groove #8f9e8f;
+    margin-top: 50px;
+    z-index: 3;
 }
 
 .title.dark {
@@ -58,6 +61,13 @@ body.dark {
     animation: title 12s linear infinite;
     font-weight: 400;
 }
+
+.title.dark h1 {
+    text-shadow:
+        2px 5px var(--pr-dark-cr),
+        5px 5px var(--darkmode-cr);
+}
+
 
 @keyframes title {
     0% {
@@ -169,23 +179,27 @@ body.dark {
     transform-style: preserve-3d;
 }
 
-.undo:active{
+.undo:active {
     box-shadow: inset 0 0 6px var(--pr-dark-cr);
 }
 
 .undo ion-icon {
     font-size: 30px;
-    transform: rotateY(180deg);
     color: var(--pr-dark-cr);
     transition: color .5s;
+    transition: transform 1s;
+    transform: rotate(0deg) rotateY(180deg);
 }
 
 body.dark .undo ion-icon {
     border-radius: 4px;
     box-shadow: inset 0 0 3px var(--pr-light-cr);
     color: var(--pr-light-cr);
+    transition: transform 1s;
+    transform: rotate(360deg) rotateY(180deg);
 }
-body.dark  .undo:active{
+
+body.dark .undo:active {
     box-shadow: inset 0 0 6px var(--pr-light-cr);
 }
 
@@ -375,6 +389,7 @@ form label {
         15px 10px 15px #527279;
 }
 
+
 .board {
     border-radius: 3px;
     display: flex;
@@ -421,8 +436,7 @@ form label {
     position: absolute;
     height: 200px;
     width: 350px;
-    background: linear-gradient(to left, #f0f8ffe6, #f08080ec, #ff7f50ea, #f08080f1, #f0f8fff1);
-    background-size: 400%;
+    background: linear-gradient(to left, #bf8fd3f1, #a6d5ffe6);
     display: none;
     flex-direction: column;
     align-items: center;
@@ -432,17 +446,6 @@ form label {
         inset -5px -5px 10px #222,
         10px 10px 15px #222;
     border-radius: 16px;
-    animation: bgSizing 12s linear infinite;
-}
-
-@keyframes bgSizing {
-    0% {
-        background-position: 0%;
-    }
-
-    100% {
-        background-position: 400%;
-    }
 }
 
 .greet {
@@ -471,9 +474,6 @@ form label {
     animation: safe 1s linear infinite;
 }
 
-.lose {
-    background-color: #c01313;
-}
 
 footer {
     border-top: 2px solid var(--pr-dark-cr);
@@ -506,27 +506,32 @@ footer {
 }
 
 
-body.dark .cell{
+body.dark .cell {
     box-shadow: 0 0 0 1px #eee,
         inset -5px -5px 0 3px #ddd8,
         inset 2px 2px 0 2px #ddd8,
         inset -2.5px -2.5px 3px #333;
-        background: linear-gradient(315deg, #aeaeae 5%, #ddd 60%);
-    
+    background: linear-gradient(315deg, #aeaeae 5%, #ddd 60%);
+
 }
 
-body.dark .cell:active{
+body.dark .cell:active {
     box-shadow: 0 0 0 1px #eee,
         inset -5px -5px 0 3px #ddd8,
         inset 2px 2px 0 2px #ddd8,
         inset -1.5px -1.5px 3px #333;
 }
 
-body.dark .cell.flipped{
-    background: linear-gradient(45deg,#ddd,#cbd8f3f1);
+body.dark .cell.flipped {
+    background: linear-gradient(45deg, #ddd, #cbd8f3f1);
     border: none;
     box-shadow: 0 0 0 1px #eee;
 }
+
+.lose {
+    background-color: #c01313;
+}
+
 
 @keyframes safe {
 
@@ -708,4 +713,3 @@ body.dark .cell.flipped{
         font-size: 20px;
     }
 }
-

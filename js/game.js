@@ -6,10 +6,10 @@ const FLAG = '🚩'
 const HEART = '❤'
 const BROKEN_HEART = '💔'
 
-var gBoard
-var gTimerInterval
-var gHistory = []
-var gSave = true // kinda works, not that great :/
+let gBoard
+let gTimerInterval
+let gHistory = []
+let gSave = true // kinda works, not that great :/
 
 const gLevel = {
     SIZE: 12,
@@ -46,9 +46,9 @@ function initGame() {
 
 function buildBoard(rows, cols = rows) {
     const board = []
-    for (var i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {
         board[i] = []
-        for (var j = 0; j < cols; j++) {
+        for (let j = 0; j < cols; j++) {
             board[i][j] = {
                 minesAroundCount: 0,
                 isShown: false,
@@ -62,11 +62,11 @@ function buildBoard(rows, cols = rows) {
 
 function renderBoard(board, selector = '.board') {
 
-    var strHTML = '<table><tbody>'
-    for (var i = 0; i < board.length; i++) {
+    let strHTML = '<table><tbody>'
+    for (let i = 0; i < board.length; i++) {
 
         strHTML += '<tr>'
-        for (var j = 0; j < board[0].length; j++) {
+        for (let j = 0; j < board[0].length; j++) {
             const cell = board[i][j]
 
             const isMine = (cell.isMine) ? MINE : (cell.minesAroundCount) ? cell.minesAroundCount : EMPTY
@@ -96,23 +96,23 @@ function renderBoard(board, selector = '.board') {
 }
 
 function placeMines(board, num, cell) {
-    var copy = []
-    for (var i = 0; i < board.length; i++) {
-        for (var j = 0; j < board.length; j++) {
+    let copy = []
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board.length; j++) {
             if (board[i][j].isMine || board[i][j] === cell) continue
             copy.push(board[i][j])
         }
     }
-    for (var j = 0; j < num; j++) {
-        var chosenCell = drawRandom(copy)
+    for (let j = 0; j < num; j++) {
+        let chosenCell = drawRandom(copy)
         chosenCell.value[0].isMine = true
     }
 }
 
 function setMinesNegsCount() {
-    for (var i = 0; i < gBoard.length; i++) {
+    for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
-            var negsCount = countNeg(gBoard, i, j)
+            let negsCount = countNeg(gBoard, i, j)
             gBoard[i][j].minesAroundCount = negsCount
         }
     }
@@ -180,8 +180,8 @@ function cellRightClicked(cell) {
 }
 
 function onMode(mode) {
-    var flag = document.querySelector('.flags span')
-    var hearts = document.querySelector('.life')
+    let flag = document.querySelector('.flags span')
+    let hearts = document.querySelector('.life')
     flag.innerText = mode.dataset.m
     gLevel.SIZE = mode.dataset.r
     gLevel.MINES = mode.dataset.m
@@ -200,8 +200,8 @@ function startTimer(cell) {
     setMinesNegsCount()
     gTimerInterval = setInterval(() => {
         ++gGame.secsPassed
-        var displayMins = Math.floor(gGame.secsPassed / 60)
-        var displaySecs = gGame.secsPassed % 60
+        let displayMins = Math.floor(gGame.secsPassed / 60)
+        let displaySecs = gGame.secsPassed % 60
 
         if (displaySecs < 10) {
             displaySecs = '0' + displaySecs
@@ -229,9 +229,9 @@ function restart() {
 
 function expandShown(board, rowIdx, colIdx) {
     const negs = []
-    for (var i = rowIdx - 1; i <= rowIdx + 1; i++) {
+    for (let i = rowIdx - 1; i <= rowIdx + 1; i++) {
         if (i < 0 || i >= board.length) continue
-        for (var j = colIdx - 1; j <= colIdx + 1; j++) {
+        for (let j = colIdx - 1; j <= colIdx + 1; j++) {
             if (j < 0 || j >= board[0].length) continue
             if (i === rowIdx && j === colIdx) continue
             if (!board[i][j].isShown) gGame.shownCount++
@@ -247,7 +247,7 @@ function expandShown(board, rowIdx, colIdx) {
 
     if (!negs.length) return
 
-    for (var k = 0; k < negs.length; k++) {
+    for (let k = 0; k < negs.length; k++) {
         expandShown(board, negs[k].i, negs[k].j)
     }
     return negs
@@ -293,8 +293,8 @@ function checkVictory() {
 
 function setEndLine(bool) {
     const elCurLevel = document.querySelector('.cur-level')
-    var level
-    var time = null
+    let level
+    let time = null
     switch (gLevel.SIZE) {
         case '4':
             level = 'Easy'
@@ -320,8 +320,8 @@ function setEndLine(bool) {
 
 
 function revealMines(board) {
-    for (var i = 0; i < board.length; i++) {
-        for (var j = 0; j < board[0].length; j++) {
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[0].length; j++) {
             if (gBoard[i][j].isMine) gBoard[i][j].isShown = true
         }
     }
@@ -367,7 +367,7 @@ function hint(op) {
     count.innerText = gGame.hint
     if (!gGame.hint) op.classList.add('used')
     const safeCells = []
-    for (var i = 0; i < gBoard.length; i++) {
+    for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard.length; j++) {
             if (!gBoard[i][j].isMine && !gBoard[i][j].isShown) safeCells.push({ i, j })
         }
@@ -396,9 +396,9 @@ function reveal3x3(cell) {
 
 
     const negs = []
-    for (var i = row - 1; i <= row + 1; i++) {
+    for (let i = row - 1; i <= row + 1; i++) {
         if (i < 0 || i > gBoard.length) continue
-        for (var j = col - 1; j <= col + 1; j++) {
+        for (let j = col - 1; j <= col + 1; j++) {
             if (j < 0 || j > gBoard.length) continue
             if (!gBoard[i][j].isShown) {
                 negs.push(gBoard[i][j])
@@ -410,7 +410,7 @@ function reveal3x3(cell) {
     renderBoard(gBoard)
 
     setTimeout(() => {
-        for (var i = 0; i < negs.length; i++) {
+        for (let i = 0; i < negs.length; i++) {
             negs[i].isShown = false
 
         }
@@ -447,8 +447,8 @@ function twoCorners(cell) {
     const endCol = (lastCellCoord.j > curCellCoord.j) ? lastCellCoord.j : curCellCoord.j
 
     const revealed = []
-    for (var i = startRow; i <= endRow; i++) {
-        for (var j = startCol; j <= endCol; j++) {
+    for (let i = startRow; i <= endRow; i++) {
+        for (let j = startCol; j <= endCol; j++) {
             if (!gBoard[i][j].isShown) {
                 revealed.push(gBoard[i][j])
                 gBoard[i][j].isShown = true
@@ -459,7 +459,7 @@ function twoCorners(cell) {
     renderBoard(gBoard)
 
     setTimeout(() => {
-        for (var i = 0; i < revealed.length; i++) {
+        for (let i = 0; i < revealed.length; i++) {
             revealed[i].isShown = false
 
         }
@@ -473,7 +473,7 @@ function twoCorners(cell) {
 
 function refreshModes() {
     const modes = document.querySelectorAll('li')
-    for (var i = 0; i < modes.length; i++) {
+    for (let i = 0; i < modes.length; i++) {
         modes[i].classList.remove('used')
     }
 
@@ -510,8 +510,8 @@ function unableHints() {
 function sevenBoom() {
     restart()
     gModes.sevenBoom = true
-    var k = 0
-    var minesCount = 0
+    let k = 0
+    let minesCount = 0
     for (let i = 0; i < gBoard.length; i++) {
         for (let j = 0; j < gBoard[0].length; j++) {
             k++
@@ -582,7 +582,7 @@ function saveHistory(bool) {
 }
 
 function copyBoard() {
-    var board = []
+    let board = []
     for (let i = 0; i < gBoard.length; i++) {
         board[i] = []
         for (let j = 0; j < gBoard[0].length; j++) {
